@@ -1,6 +1,6 @@
 # Open Questions
 
-Status: Draft. These are decisions to resolve with the product owner; they are not implied requirements.
+Status: Draft. These are unresolved decisions, not implied requirements.
 
 ## Decision blockers for the MVP
 
