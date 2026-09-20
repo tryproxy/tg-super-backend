@@ -1,70 +1,37 @@
-# Open Questions
+# Open questions
 
-Status: Draft. These are unresolved decisions, not implied requirements.
+Accepted Prototype assumptions are kept with their original questions below. MVP and later questions remain unresolved. Cross-task rules are in [decisions.md](decisions.md).
 
-## Decision blockers for the MVP
+## Prototype — accepted assumptions
 
-1. **Customer-facing identity**
-   Does the MVP require a regular Telegram bot, a Telegram Business account, or only one of them initially?
+1. **Existing product bots:** must a provided bot be dedicated to this support service, or can it already have a webhook/backend that must keep working?
 
-2. **Bot ownership**
-   For a regular bot, must the bot belong to the product owner, may it be managed by the platform, or must both onboarding modes be supported? Must the product owner retain the bot after leaving the platform?
+   (Принятое допущение для Prototype: бот каждого продукта выделен для этого сервиса; сохранять другой backend или webhook не требуется.)
+2. **Media details:** what should the service report for forwarded messages, stickers, videos, and reply context that the Prototype does not support? Albums and edits are already outside Prototype.
 
-3. **Bot topology**
-   Does every product require a distinct bot, or may several products share a platform bot and be selected through a deep link or prior product context?
+   (Принятое допущение для Prototype: поддерживаемое содержимое пересланных сообщений передаётся как обычное сообщение, без метаданных пересылки и связи reply. Неподдерживаемый формат создаёт топик даже при первом обращении: менеджер видит причину отказа, отправитель получает уведомление.)
+3. **Topic recovery:** what should happen if a customer topic is manually closed or deleted?
 
-4. **Support group topology**
-   Does every product always have exactly one private forum supergroup? Can a group serve multiple products, or can a product have multiple groups?
+   (Принятое допущение для Prototype: закрытый топик открывается снова; взамен удалённого создаётся новый и обновляется связь с клиентом.)
+4. **Operational history:** how long should processed update IDs, delivery state, and other customer-related metadata be retained?
 
-5. **Group creation**
-   Must the MVP create the supergroup automatically, or may the owner create/select it manually and register it in the Shell?
+   (Принятое допущение для Prototype: ID обработанных обновлений хранятся 7 дней, статусы доставки — 30 дней, связь клиента с топиком — до удаления интеграции.)
+5. **Delivery guarantee:** what should happen if a Worker stops after sending to Telegram but before storing the delivery result?
 
-6. **Owner-account relationship**
-   Must every product have a distinct Telegram owner account, or may one company-controlled account own several product groups? Is the owner account expected to be the same account customers contact?
+   (Принятое допущение для Prototype: перед отправкой сохраняется статус попытки. Если результат после сбоя неизвестен, автоматического повтора нет: оператор видит этот статус и сверяет доставку вручную.)
+6. **Environments:** which bot identities, groups, D1 databases, and webhook addresses will be used for local, staging, and production verification?
 
-7. **Manager message delivery**
-   Does every ordinary manager message sent in a customer topic immediately go to the customer? If yes, where do managers place internal discussion? If no, what explicit send action is required?
+   (Принятое допущение для Prototype: для разработки и демонстрации используются отдельные боты, группы, вебхуки и D1. Локальная разработка использует тестовый набор; production для Prototype не подготавливается. Конкретные токены и ID задаются при развёртывании.)
 
-8. **Manager permissions**
-   Are managers normal group members with permission to write, or do any roles require administrator rights such as managing topics, inviting users, or deleting messages?
+## Before MVP
 
-9. **CSV contract**
-   Which columns are guaranteed: name, email, username, phone, Telegram user ID, requested role? Who sends personal invite links when email is present?
+7. **Business chat scope:** does the connected bot handle all eligible personal chats or only chats explicitly selected in Telegram?
+8. **Business permissions:** which rights are mandatory, and what should happen when Telegram no longer permits a reply through the connection?
+9. **CSV contract:** which columns are required, and who distributes manager invite links?
+10. **Shell ownership:** which Shell product/remote identifier is authoritative for this backend, and who can change an integration?
 
-10. **Initial message scope**
-    Is text-only sufficient for the first release, or must photos, files, voice messages, albums, replies, and edits work from day one?
+## After MVP
 
-## Product behavior
-
-11. Is there one persistent topic per customer/product pair, or can the same customer open multiple tickets?
-12. What closes a conversation, and what happens when either side sends a new message after closure?
-13. What should the topic title contain when the customer has no username or changes their display name?
-14. Should managers see the customer's Telegram username, numeric ID, language, product metadata, or prior conversations in a pinned topic card?
-15. Should the customer see which manager answered, or should all replies remain anonymous behind the bot/business identity?
-16. Do managers need assignment, ownership, escalation, SLA, tags, or status beyond Telegram's topic state?
-17. What notification behavior is required beyond each manager's Telegram group notification settings?
-18. What should happen when the customer blocks the bot or delivery fails?
-
-## Telegram Business
-
-19. If Business accounts are supported, will owners connect a shared platform connector bot or provide their own Business-enabled bot?
-20. What should happen when the account already has another Business Bot connected?
-21. Which Business Bot rights are mandatory, and which are optional?
-22. How should the system handle a manager response when the connected bot is outside Telegram's eligible recent-incoming-message window?
-23. Are the customer-facing Business account and the support-group owner account allowed or expected to differ?
-
-## Provisioning and security
-
-24. What is meant by an "account file": an authorized Telegram session, phone numbers, usernames, or another export format?
-25. Who is responsible for Telegram login codes and two-factor authentication during automated provisioning?
-26. Where may encrypted user sessions and bot tokens be stored, and who may rotate or revoke them?
-27. Is direct MTProto invitation of managers a requirement, or is a personal invite link acceptable?
-28. What audit history and retention policy apply to customer messages, manager replies, delivery failures, and account actions?
-
-## Runtime and deployment
-
-29. Is Cloudflare the required deployment platform or the current preference?
-30. Is D1 sufficient as the source of truth, or must this service share PostgreSQL data with another system?
-31. What delivery guarantees are required before adding a queue and dead-letter handling?
-32. What expected message volume and burst concurrency should guide the need for per-conversation serialization?
-33. Which environments are required, and how are Telegram webhooks isolated between local, staging, and production bots?
+11. What exactly is supplied for MTProto provisioning: a fresh login, an authorized session, or another account export?
+12. Who handles Telegram login codes and two-factor authentication, and where may encrypted user sessions live?
+13. Are direct MTProto invitations worth implementing after link-based onboarding works?

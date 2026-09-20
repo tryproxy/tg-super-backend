@@ -1,162 +1,79 @@
-# User Stories
+# User stories
 
-Status: Draft. Stories marked **MVP** describe the current proposed first release; the remaining stories preserve discussed follow-up options.
+The stage label indicates when a story is planned. Prototype is the first working demonstration; MVP follows it. Stories after MVP are not assigned to a third named stage.
 
-## Product setup
+## Prototype
 
-### US-01 — Register Telegram support for a product **MVP**
+### US-01 — Register product support
 
-As a product owner, I want to register a Telegram customer channel and support group for my product so that customer conversations are routed to the correct team.
+As an operator, I can register multiple products through a protected admin API and associate each with one product-owned bot and one existing forum supergroup.
 
-Acceptance notes:
+Acceptance: the configuration is validated before activation; a group cannot be active for two products; credentials are not exposed by read endpoints.
 
-- The configuration belongs to exactly one product.
-- The backend validates access to the bot and group before activation.
-- The Shell can show whether the integration is ready or needs attention.
+### US-02 — Prepare the support group
 
-### US-02 — Use a product-owned bot
+As an operator, I can manually add the common service bot and managers to a product group so the team can work there.
 
-As a product owner, I want to connect a bot that I control so that I retain its public username and ownership.
+Acceptance: the service bot has the permissions required to read messages and create topics; missing permissions produce an actionable setup status.
 
-Acceptance notes:
+### US-03 — Start and continue a conversation
 
-- The bot token is stored as a secret and is never returned to the browser after registration.
-- A token or webhook conflict produces an actionable setup status.
-- Disconnecting the product does not silently destroy or transfer the bot.
+As a customer, I can message a product bot and have my messages appear in one active mapped topic for that product/channel/chat.
 
-### US-03 — Use a platform-managed bot
+Acceptance: the first message, including an unsupported format, creates at most one active topic; later messages reuse it unless it was deleted, in which case a replacement is mapped; another product cannot receive the conversation; repeated webhook updates within the 7-day deduplication window do not duplicate delivery.
 
-As a product owner, I want the platform to provide and configure a bot so that I can start support without operating BotFather settings or webhooks.
+### US-04 — Send ordinary media
 
-Acceptance notes:
+As a customer or manager, I can send text, photos, documents, and voice messages through the bridge when the cloud Bot API supports their transfer.
 
-- Ownership and offboarding behavior are visible before activation.
-- Each incoming update can be resolved to the correct product.
+Acceptance: captions are preserved where applicable; supported forwarded content is relayed without forwarding metadata or reply linkage; unsupported or oversized content is explained in the topic and the sender is notified rather than shown a success claim.
 
-### US-04 — Connect a Telegram Business account
+### US-05 — Answer from a topic
 
-As a product owner, I want to connect my Telegram Business account so that customers communicate with the account's identity while the same support workflow handles the messages.
+As a manager, I can send a message in a mapped customer topic and the customer receives it from the product bot immediately.
 
-Acceptance notes:
+Acceptance: replies from another group or unmapped topic are not delivered; the service bot's own messages are not echoed; a confirmed delivery failure appears in the same topic, while an unknown outcome is exposed for manual reconciliation without automatic resend.
 
-- The owner grants access through Telegram and does not provide account credentials or a user session.
-- The backend stores the business connection and granted rights.
-- The Shell reports disconnected, insufficient-rights, and connected states.
-- Business messages use the same conversation/topic workflow as regular bot messages.
+### US-06 — Observe setup and delivery through the admin API
 
-## Support group provisioning
+As an operator, I can see whether a product's bot, group permissions, webhook, and recent delivery are usable without a Shell interface.
 
-### US-05 — Register an existing forum supergroup **MVP**
+Acceptance: status identifies the failing part without exposing credentials or customer content.
 
-As a product owner, I want to attach an existing forum supergroup so that managers can use it as the product's support inbox.
+## MVP
 
-Acceptance notes:
+### US-07 — Connect a Telegram Business account
 
-- The group is forum-enabled.
-- The support bot is an administrator with the rights needed to read manager messages and manage topics.
-- The group is not already active for an incompatible product configuration.
+As a product owner, I can connect a Business account through the shared platform connector bot so the support group handles its customer conversations and replies use the Business identity.
 
-### US-06 — Automatically create a support group
+Acceptance: one-time pairing associates the connection with the product; the connection and granted rights are verified; an account connected to another Business bot is refused; the ordinary bot may remain active for the same product with separate customer topics; manual Business replies appear as already sent and are not redelivered. Business chat scope still needs a decision.
 
-As a product owner, I want an authorized Telegram account to create and configure the product's support supergroup so that setup requires minimal manual work.
+### US-08 — Configure support in Shell
 
-Acceptance notes:
+As a product owner, I can set up a product channel and group in Runtime MF Shell and see actionable integration status.
 
-- The owner explicitly authorizes the user-account session used for provisioning.
-- The created group has forum topics enabled.
-- The support bot is added with the required administrator rights.
-- Provisioning failures are resumable and visible without exposing session secrets.
+Acceptance: the Shell calls backend APIs and never receives persistent Telegram credentials after registration.
 
-## Manager onboarding and access
+### US-09 — Import managers from CSV
 
-### US-07 — Import product managers from CSV **MVP**
+As a product owner, I can import expected managers for a product from CSV.
 
-As a product owner, I want to import a list of managers so that the expected support team is associated with the product.
+Acceptance: invalid rows are reported; email is not treated as Telegram identity; the CSV contract is defined before implementation.
 
-Acceptance notes:
+### US-10 — Invite and identify managers
 
-- A row can contain a name, email, optional Telegram username or phone, and requested role.
-- Email is not treated as proof of Telegram identity.
-- Invalid rows are reported without discarding valid rows.
+As a product owner, I can issue controlled invite links or join requests and associate the joined Telegram user with the expected manager record.
 
-### US-08 — Invite a manager through a personal link **MVP**
+Acceptance: join status and role are visible; a manager's Telegram user ID is captured after joining; role privileges are limited to what is needed.
 
-As a product owner, I want each imported manager to receive a controlled invitation so that the correct Telegram user joins the support group.
+## After MVP
 
-Acceptance notes:
+### US-11 — Provision a support group
 
-- The invitation can expire or have a usage limit.
-- Joining binds the manager record to the Telegram user ID.
-- Reusing or revoking an invitation has a visible status.
+As a product owner, I can authorize a Telegram user session to create and configure a forum group automatically.
 
-### US-09 — Apply manager privileges **MVP**
+### US-12 — Attempt direct manager invitations
 
-As a product owner, I want managers to receive the minimum permissions for their requested role so that they can answer customers without unnecessary group control.
+As a product owner, I can request direct Telegram invitations where permitted, with a link-based fallback when Telegram prevents a direct invite.
 
-Acceptance notes:
-
-- A normal manager can read and write in customer topics.
-- Elevated rights are granted only when the configured role requires them.
-- Removing a manager prevents future support actions and updates the integration status.
-
-### US-10 — Attempt direct manager invitation
-
-As a product owner, I want the provisioning account to attempt direct Telegram invitations so that eligible managers can join without using a link.
-
-Acceptance notes:
-
-- Privacy or Telegram-limit failures fall back to a personal invite link.
-- A failed direct invitation is not reported as successful onboarding.
-
-## Customer conversations
-
-### US-11 — Start a customer conversation **MVP**
-
-As a customer, I want my first message to reach the correct product team so that I can request support through Telegram.
-
-Acceptance notes:
-
-- The product is derived from the receiving customer channel.
-- The first message creates at most one active customer topic.
-- Duplicate webhook delivery does not duplicate the topic or message.
-
-### US-12 — Continue in the same topic **MVP**
-
-As a manager, I want subsequent messages from the same product/customer conversation to appear in the same topic so that the full context stays together.
-
-Acceptance notes:
-
-- The mapping includes product, customer channel, and external customer chat.
-- The same Telegram user contacting another product does not reuse the wrong topic.
-
-### US-13 — Answer a customer from Telegram **MVP**
-
-As a manager, I want to answer from the customer's topic so that I can work without a separate support application.
-
-Acceptance notes:
-
-- Only messages from the configured product group and a mapped customer topic can be delivered externally.
-- The customer receives the answer through the product's configured customer channel.
-- Failed delivery is visible to managers or operators.
-
-### US-14 — Receive customer media
-
-As a manager, I want supported customer media to appear in the topic so that I can handle requests containing files, photos, voice messages, or other Telegram content.
-
-### US-15 — Preserve reply context and edits
-
-As a customer or manager, I want replies and supported edits to retain their context across the bridge so that the conversation remains understandable.
-
-## Operations
-
-### US-16 — Observe integration health **MVP**
-
-As a product owner, I want the Shell to show bot/business connection, group, permission, webhook, and manager-onboarding status so that setup failures are actionable.
-
-### US-17 — Recover a deleted or closed topic
-
-As a manager, I want the system to reopen or recreate a missing conversation topic so that support can continue without manual database repair.
-
-### US-18 — Keep internal notes private
-
-As a manager, I want an explicit way to write an internal note so that team discussion cannot be accidentally delivered to the customer.
+Further capabilities such as separate tickets, message edits, albums, and internal notes inside customer topics remain uncommitted.

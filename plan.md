@@ -1,133 +1,52 @@
-# Implementation Plan
+# Спецификация продукта: Telegram support
 
-## Goal
+Одной фразой: клиент пишет боту продукта, команда видит переписку в отдельном топике Telegram-супергруппы и отвечает из этого топика.
 
-Build a serverless backend that routes Telegram customer conversations into product support forum groups and sends manager replies back through the same customer-facing channel.
+## Для кого и зачем
 
-The backend is the Telegram integration layer. The Runtime MF Shell is a later control plane for configuration and status; it is not part of the first backend implementation.
+- Клиенту нужен привычный Telegram-чат поддержки конкретного продукта.
+- Менеджеру нужна общая очередь обращений прямо в Telegram.
+- Оператору интеграции нужно связать продукт, его бота и рабочую группу без изменения Shell.
 
-## First release boundary
+Продукт здесь — отдельная единица поддержки. В будущем она может соответствовать remote в Runtime MF Shell.
 
-The first release should establish the complete conversation path with manual setup:
+## Как работает Prototype
 
-- support multiple products;
-- support a regular product-owned Telegram bot;
-- support a Telegram Business account through a connected platform connector bot;
-- use one private forum-enabled supergroup for each product;
-- use one persistent topic for each (product, customer channel, external customer chat) conversation;
-- use one common platform service bot as the internal bridge and group administrator;
-- provide a protected admin API for registering products, channels, groups, and manager access;
-- add support groups and managers manually;
-- route inbound customer messages to the matching topic;
-- route ordinary manager replies from that topic back to the customer;
-- make webhook processing idempotent and keep delivery status visible.
+Для каждого продукта оператор вручную создаёт или выбирает одну приватную супергруппу с включёнными темами. В группу добавляется общий служебный бот платформы с правами, необходимыми для чтения сообщений и управления темами. Менеджеры вступают в группу вручную. Клиенту предоставляется отдельный бот продукта.
 
-The owner account that governs a support group, the customer-facing bot or Business account, and manager accounts are separate roles. The design must not require them to be the same Telegram account.
+Клиент пишет боту продукта. Первое обращение создаёт в группе продукта постоянный топик с именем клиента. Следующие сообщения того же клиента в тот же бот попадают в этот топик. Если тот же клиент пишет боту другого продукта, это отдельный топик в другой группе.
 
-## Core message flow
+Менеджер отправляет сообщение в топике; клиент получает его от бота продукта. Обычное сообщение в клиентском топике считается ответом клиенту сразу после отправки в Telegram. Внутреннее обсуждение ведётся вне клиентского топика.
 
-### Setup
+Prototype поддерживает текст, фото, документы и голосовые сообщения в пределах возможностей облачного Telegram Bot API. Если сообщение нельзя передать, ошибка должна быть видна менеджеру в топике. Подробные проверяемые правила находятся в [_docs/specification.md](_docs/specification.md).
 
-1. Register a product through the admin API.
-2. Register the product's regular bot or Business connection.
-3. Create or select the product's forum supergroup manually.
-4. Add the common service bot to the group with the minimum rights required to read messages and manage topics.
-5. Register the group and its Telegram identifiers.
-6. Add managers to the group manually and grant their configured Telegram permissions.
+## Основные правила
 
-### Customer to support
+- Один продукт имеет одну активную рабочую форум-группу.
+- У продукта в Prototype один клиентский канал — его обычный Telegram-бот.
+- Один общий служебный бот работает во всех рабочих группах.
+- Один клиентский диалог имеет один постоянный топик.
+- Ключ диалога включает продукт, клиентский канал и внешний Telegram chat ID.
+- Входящие обновления Telegram могут повторяться; повтор не должен создавать новый топик или дублировать доставку.
+- Владелец группы, клиентский бот и менеджеры — разные роли; совпадение аккаунтов не требуется.
+- Доступ к настройке интеграции пока предоставляет защищённый admin API. У Shell интерфейса в Prototype нет.
 
-1. Telegram sends a webhook update to the backend.
-2. The adapter resolves the product and customer channel.
-3. The backend normalizes the update into a common inbound message.
-4. It finds the conversation by product, customer channel, and external customer chat.
-5. If the conversation has no topic, it creates one and stores the mapping.
-6. It copies the customer message into that topic.
-7. It records the delivery result without logging tokens or message contents.
+## Не входит в Prototype
 
-### Support to customer
+- Telegram Business как клиентский канал;
+- настройка через Runtime MF Shell;
+- CSV-импорт менеджеров, автоматические приглашения и выдача ролей;
+- автоматическое создание группы от имени пользовательского Telegram-аккаунта;
+- отдельные тикеты для одного клиента, внутренние заметки внутри клиентского топика, альбомы и синхронизация правок сообщений.
 
-1. The service bot receives a message from a mapped topic in a product group.
-2. The router resolves the conversation from the group and topic identifiers.
-3. It sends the manager message through the configured channel:
-   - regular bot: Bot API sendMessage or the matching media method;
-   - Business channel: the connected Business context and business_connection_id.
-4. It records success or an actionable failure in the topic and delivery data.
-5. Every ordinary manager message in a customer topic is treated as a customer reply in the first release. Internal discussion must happen outside customer topics until an explicit internal-note flow is designed.
+## MVP
 
-## Logical components
+MVP добавляет Telegram Business как второй тип клиентского канала, настройку и статусы интеграции в Runtime MF Shell, а также CSV onboarding менеджеров с приглашениями. Продукт может иметь обычного бота и Business-канал одновременно; для каждого канала и клиента сохраняется отдельный диалог и топик. Business-аккаунты подключаются к общему боту-коннектору платформы. Общий принцип «клиентский канал → диалог → топик → ответ» сохраняется. Точные условия подключения Business и контракт CSV фиксируются до реализации соответствующих задач.
 
-- **Admin API**: protected product, channel, group, manager, and status operations. It can be called directly during the manual phase and later by the Shell.
-- **Telegram webhook layer**: validates webhook secrets and dispatches updates to the correct product/channel adapter.
-- **Channel adapters**: keep regular Bot API updates and Telegram Business updates behind one normalized interface.
-- **Conversation and topic router**: owns conversation identity, topic creation/reuse, authorization, and delivery decisions.
-- **Persistence**: stores products, channel references, group/topic mappings, manager Telegram identities, business connections, processed updates, and delivery state.
-- **Service bot integration**: one platform-controlled bot is used as the internal bridge and can administer all configured product support groups.
-- **Provisioning boundary**: reserved for later MTProto automation; it must not be part of ordinary message routing.
+## После MVP
 
-## Technical direction
+Автоматическое создание групп через отдельно авторизованный MTProto provisioning и прямые приглашения менеджеров остаются возможными продолжениями. Отдельного третьего этапа пока нет.
 
-Use the proposed serverless stack:
+## Принятые решения и открытые вопросы
 
-- TypeScript;
-- Node.js 22 and pnpm;
-- Hono for the HTTP and admin API;
-- grammY for Telegram Bot API integration;
-- Cloudflare Workers and webhooks;
-- Cloudflare D1 for the initial relational state;
-- Zod for API, configuration, and normalized update validation;
-- Wrangler for deployment;
-- Vitest for focused routing and integration tests.
-
-Keep secrets outside ordinary API responses and logs. Bot tokens require protected secret storage. User-account sessions, if MTProto is added later, require a separate protected boundary and must never be exposed to the Shell browser.
-
-## Delivery phases
-
-### Phase 1 — Manual backend MVP
-
-- Define the domain model and migrations.
-- Implement protected admin endpoints.
-- Register products, regular bots, Business connections, support groups, and managers.
-- Implement webhook verification and idempotency.
-- Implement regular Bot API inbound/outbound routing.
-- Implement Business update normalization and outbound delivery.
-- Implement topic creation/reuse and group/topic authorization.
-- Add focused tests for identity boundaries, duplicate updates, topic mapping, permissions, and delivery failures.
-- Deploy a minimal Worker and verify the complete manual setup path.
-
-### Phase 2 — Shell integration
-
-- Expose the backend configuration and health model to the Runtime MF Shell.
-- Add Shell operations for product/channel/group setup and connection status.
-- Show actionable states for invalid credentials, missing group permissions, disconnected Business accounts, webhook problems, and delivery failures.
-- Keep Telegram credentials and account sessions backend-only.
-
-### Phase 3 — MTProto provisioning
-
-- Add an isolated provisioning component for explicitly authorized Telegram user sessions.
-- Automate creation and forum configuration of a support supergroup when selected.
-- Add the service bot with required rights.
-- Make provisioning resumable and report status without exposing session secrets.
-- Keep provisioning failures separate from message-routing failures.
-
-### Phase 4 — CSV manager onboarding
-
-- Define and validate the CSV contract.
-- Import manager records without treating email as Telegram identity.
-- Generate controlled personal invite links or join requests.
-- Bind a manager record to the Telegram user ID after the manager joins.
-- Apply the minimum configured role permissions.
-- Add direct MTProto invitations only if they remain necessary after the invite-link flow.
-
-## Verification gates
-
-Before considering the first release complete, verify:
-
-- two products cannot route into each other's groups or topics;
-- the same customer can use both channels without conversation-key collisions;
-- repeated Telegram updates do not create duplicate topics or messages;
-- only a mapped support-group topic can send a manager reply externally;
-- Business messages use the correct business_connection_id;
-- a missing permission, closed topic, blocked customer, or failed delivery is visible and recoverable;
-- tokens, user sessions, and customer message contents do not appear in logs or API responses;
-- existing _docs/* and AGENTS.md remain unchanged by this planning change.
+Принятые общие правила записаны в [_docs/decisions.md](_docs/decisions.md). Вопросы, по которым решения ещё нет, находятся в [_docs/open-questions.md](_docs/open-questions.md).
