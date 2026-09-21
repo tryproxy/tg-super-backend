@@ -7,6 +7,7 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 ## Required context
 
 - GitHub Issues are the active backlog. Read `_docs/process.md` before working an issue.
+- Follow the role cycle in `_docs/process.md`. The main session selects the issue and delegates `pm`, `engineer`, and `qa`; it does not groom, implement, or verify the issue itself.
 - Before grooming, implementing, or reviewing an issue, read `_docs/decisions.md`.
 - Read `_docs/tech-stack.md` before adding a runtime, framework, database, deployment target, or package.
 - Read `_docs/open-questions.md` when an unresolved Telegram behavior affects the task.

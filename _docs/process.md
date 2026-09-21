@@ -1,26 +1,38 @@
 # Work process
 
 - GitHub Issues are the active backlog. The current active stage is `prototype`.
-- Work on one open issue at a time. An issue is eligible when it carries the active stage label and all dependencies listed in it are closed. If several issues are eligible, select the lowest issue number.
-- If the selected issue is blocked or conflicts with `_docs/decisions.md`, stop and report the blocker before grooming or implementation.
+- Work on one open issue at a time, through the roles and lifecycle below.
 
-## Grooming
+## Roles
 
-- Treat a selected issue as not ready for implementation until it has been groomed.
-- Read the issue's Goal, acceptance criteria, Out of scope, Constraints, and dependencies. Read `_docs/decisions.md` and `_docs/tech-stack.md`; consult `_docs/open-questions.md` when unresolved behavior affects the issue.
-- Inspect the current repository state and confirm that the issue describes one coherent outcome.
-- Make every acceptance criterion concrete and verifiable, identify the focused tests or observable checks required, and confirm the scope, constraints, and dependencies.
-- Amend the issue before coding when a material decision, acceptance criterion, dependency, or verification requirement is missing. A decision that affects multiple issues belongs in `_docs/decisions.md`.
-- If grooming reveals a missing product decision, stop and report it rather than inventing behavior during implementation.
+- The main session selects the issue, delegates each role, and checks the handoff. It does not groom, implement, or verify the issue itself.
+- `pm` grooms one issue and follows `_docs/team/pm.md`.
+- `engineer` implements one groomed issue and follows `_docs/team/engineer.md`.
+- `qa` verifies one completed issue and follows `_docs/team/qa.md`.
 
-## Implementation and verification
+## Delegation
 
-- Treat the groomed issue as the implementation contract. Implement the smallest change that meets it and do not expand the issue's scope.
-- When behavior changes, update the relevant decisions and issue documentation in the same change.
-- Commit at coherent, verified checkpoints. A small issue may need only one focused commit; do not accumulate unrelated work.
-- Before closing, reread the groomed issue and verify every acceptance criterion with its focused test or observable check.
-- Record concrete verification evidence in the issue, check each satisfied acceptance criterion, and close the issue only after all criteria are met and verified.
-- If the backlog is being processed as a batch, repeat from issue selection after closeout. Otherwise stop after the selected issue.
+- Invoke the project agent whose name is the role: `pm`, `engineer`, or `qa`.
+- The session resolves that name through its own subagent mechanism. Model, effort, and tool settings stay in the agent file.
+- If a role cannot write to GitHub, it returns the exact proposed update. The main session reviews that update and applies it. It does not redo the role's work.
+
+## Lifecycle
+
+Active stage label: `prototype`.
+
+An issue is eligible when it is open, carries that label, and every dependency listed in it is closed. If several are eligible, take the lowest issue number. If it is blocked or conflicts with `_docs/decisions.md`, stop and report it. Stop when none remain.
+
+1. Select the next eligible issue.
+2. Delegate grooming to `pm`. Accept the issue for implementation only after its Goal, acceptance criteria, Out of scope, Constraints, and verification checks are concrete.
+3. Delegate the groomed issue to `engineer`. On a retry, include the QA report. The engineer leaves the issue open.
+4. Delegate verification to `qa`.
+5. On `FAIL`, return to step 3 with that report.
+6. On `PASS`, the acceptance criteria are checked and the issue is closed.
+7. Repeat from step 1.
+
+Do not skip grooming. The engineer does not close the issue. QA does not change application code.
+
+## Reference
 
 - Issue references `P-01` through `P-19` point to the [archived Prototype plan](archived/plan.md). Archived plans, specifications, architecture, and task drafts are reference material. Current decisions and GitHub Issues take precedence if they differ.
 - When work moves to MVP, use accepted decisions, open MVP questions, and archived Prototype material to draft that stage's scope and issues. Keep `_docs/tech-stack.md` current; write a new architecture document only if the stage needs a cross-issue design.
