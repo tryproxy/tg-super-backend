@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build and test output
+dist/
+coverage/
+*.tsbuildinfo
+
+# Cloudflare Workers local state
+.wrangler/
+
+# Local environment variables and secrets
+.dev.vars*
+.env*
+!.dev.vars.example
+!.env.example
+
+# Logs
+*.log
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
