@@ -1,6 +1,6 @@
 # Prototype tech stack
 
-Approved for the Prototype. Serverless operation and use of free tiers are priorities. Details and limits: [architecture.md](../architecture.md).
+Approved for the Prototype. Serverless operation and use of free tiers are priorities. Details and limits: [archived architecture](archived/architecture.md).
 
 | Purpose | Choice | Prototype cost |
 | --- | --- | --- |

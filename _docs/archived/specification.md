@@ -1,8 +1,8 @@
 # Prototype specification
 
-Status: Prototype scope; implementation has not started. Accepted Prototype assumptions and unresolved later questions are tracked in [open-questions.md](open-questions.md).
+Status: Prototype scope; implementation has not started. Accepted Prototype assumptions and unresolved later questions are tracked in [open-questions.md](../open-questions.md).
 
-This document defines observable behavior for the Prototype. [plan.md](../plan.md) gives the product narrative; [decisions.md](decisions.md) records cross-task choices.
+This document defines observable behavior for the Prototype. [plan.md](plan.md) gives the product narrative; [decisions.md](../decisions.md) records cross-task choices.
 
 ## Setup and access
 

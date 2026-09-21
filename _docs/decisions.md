@@ -21,4 +21,4 @@ Cross-task product and architecture decisions:
 - MVP does not imply automatic group creation.
 - MTProto group provisioning and direct manager invitations are considered after MVP and remain isolated from ordinary message routing.
 
-Accepted Prototype assumptions are recorded with their questions in [open-questions.md](open-questions.md); MVP and later questions remain open. Any later change to a cross-task rule should update this file and the affected specification.
+Accepted Prototype assumptions are recorded with their questions in [open-questions.md](open-questions.md); MVP and later questions remain open. Any later change to a cross-task rule should update this file and the affected GitHub Issues or current stage documents.

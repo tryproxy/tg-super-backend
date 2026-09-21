@@ -2,15 +2,17 @@
 
 Backend for routing Telegram customer-support conversations between a product's customer-facing channel and a private forum supergroup.
 
-Use CodeGraph before text search when locating code symbols or call paths if a .codegraph/ directory exists.
+Use CodeGraph before text search when locating code symbols or call paths if a `.codegraph/` directory exists.
 
 ## Required context
 
-- Read _docs/decisions.md before changing product behavior, architecture, or scope.
-- Read plan.md and _docs/specification.md before implementing Prototype behavior.
-- Read _docs/user-stories.md for the relevant story and _docs/open-questions.md before assuming an unresolved Telegram rule.
-- Read _docs/tech-stack.md and architecture.md before adding a runtime, framework, database, deployment target, or package.
-- If a task conflicts with an accepted decision, surface the conflict before implementing it.
+- GitHub Issues are the active backlog. Read `_docs/process.md` before working an issue.
+- Before grooming, implementing, or reviewing an issue, read `_docs/decisions.md`.
+- Read `_docs/tech-stack.md` before adding a runtime, framework, database, deployment target, or package.
+- Read `_docs/open-questions.md` when an unresolved Telegram behavior affects the task.
+- If an issue conflicts with `_docs/decisions.md`, stop and report the conflict. Continue only after the issue or decision is corrected.
+- Read `_docs/archived/` only when linked or needed for missing context. Archived material is reference only; current decisions and GitHub Issues take precedence.
+- `P-01` through `P-19` in Prototype issues refer to `_docs/archived/plan.md`.
 
 ## Current direction
 
@@ -29,9 +31,10 @@ Use CodeGraph before text search when locating code symbols or call paths if a .
 - Treat an ordinary message in a mapped customer topic as an immediate external reply. Keep internal discussion outside mapped customer topics until an explicit internal-note feature is decided.
 - Give managers the least Telegram privileges required for their role.
 - Do not treat an email address as a Telegram identity.
-- Prefer the smallest implementation that satisfies the accepted story. Add queues, Durable Objects, or provisioning infrastructure only when a concrete requirement justifies them.
-- When behavior changes, update the relevant specification and decisions in the same change.
-- Add focused tests for routing, idempotency, authorization, and conversation-to-topic mapping once implementation begins.
+- Prefer the smallest implementation that satisfies the accepted issue. Add queues, Durable Objects, or provisioning infrastructure only when a concrete requirement justifies them.
+- When behavior changes, update the relevant decisions and issues in the same change.
+- Declare dependencies in `package.json` and manage them with pnpm. Add a dependency only when the groomed issue requires it and it fits `_docs/tech-stack.md`; obtain approval and update the tech stack before introducing anything outside it.
+- Prefer a focused automated test with each implementation issue. Routing, idempotency, authorization, and conversation-to-topic mapping require focused tests; use an observable check only when automation is not practical.
 
 ## Commands
 

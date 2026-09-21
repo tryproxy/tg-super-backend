@@ -34,4 +34,4 @@ A conversation key includes product, customer channel, and external customer cha
 - **MVP:** Telegram Business support through a shared connector bot, Runtime MF Shell integration, CSV manager onboarding and invitations. Bot and Business channels may coexist for one product.
 - **After MVP:** possible MTProto group provisioning and direct manager invitations; there is no named third stage.
 
-The accepted product behavior is in [plan.md](../plan.md) and [specification.md](specification.md). Cross-task rules are in [decisions.md](decisions.md). Technical details are in [architecture.md](../architecture.md).
+The accepted product behavior is in [plan.md](plan.md) and [specification.md](specification.md). Cross-task rules are in [decisions.md](../decisions.md). Technical details are in [architecture.md](architecture.md).
