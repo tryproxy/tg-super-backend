@@ -33,7 +33,7 @@
 
 Менеджер отправляет сообщение в топике; клиент получает его от бота продукта. Обычное сообщение в клиентском топике считается ответом клиенту сразу после отправки в Telegram. Внутреннее обсуждение ведётся вне клиентского топика.
 
-Prototype поддерживает текст, фото, документы и голосовые сообщения в пределах возможностей облачного Telegram Bot API. Если сообщение нельзя передать, ошибка должна быть видна менеджеру в топике. Проверяемые правила Prototype приведены ниже в этом плане.
+Prototype поддерживает текст, фотографии размером до 10 МБ, а также документы и голосовые сообщения размером до 20 МБ. Если сообщение нельзя передать, ошибка должна быть видна менеджеру в топике. Проверяемые правила Prototype приведены ниже в этом плане.
 
 ## Основные правила
 
@@ -64,7 +64,7 @@ Prototype поддерживает текст, фото, документы и �
 - P-07: A private message to a configured product bot resolves to that product and its customer channel.
 - P-08: The first message from a customer creates one topic in the product's forum group and persists the conversation-to-topic mapping, including when its format is unsupported.
 - P-09: Later messages from the same customer to the same channel reuse the active mapped topic. A closed topic is reopened; a deleted topic is replaced and the mapping updated. Another product or channel gets a separate conversation. The topic title uses the customer's Telegram display name, or `Client <chat ID>` when no name is available. If the display name later changes, the topic title is updated without creating a new conversation.
-- P-10: Text, photos, documents, and voice messages are relayed with their captions where applicable. Supported content from forwarded messages is treated as ordinary content; forwarding metadata and reply linkage are not preserved. For media that requires download and upload between the product bot and service bot, the cloud Bot API 20 MB download ceiling applies.
+- P-10: Text, photos up to 10 MB, and documents and voice messages up to 20 MB are relayed with their captions where applicable. Supported content from forwarded messages is treated as ordinary content; forwarding metadata and reply linkage are not preserved. Media is downloaded and uploaded because the product support bot and service bot cannot reuse each other's `file_id`.
 - P-11: Unsupported or oversized content produces a topic notice explaining what was not relayed, including for a first message. A customer sender is notified through the product bot; a manager sender sees the notice in the topic. The system does not claim successful delivery.
 - P-12: Repeated webhook updates are deduplicated within the 7-day processed-ID retention window and do not create additional active topics or duplicate messages. An outbound attempt with an unknown result is not resent automatically.
 
@@ -73,12 +73,12 @@ Prototype поддерживает текст, фото, документы и �
 - P-13: An ordinary message sent in a mapped customer topic by a group participant is treated as an immediate reply to the customer.
 - P-14: The reply is delivered through the same product bot the customer contacted. The customer sees the bot identity.
 - P-15: Messages from another group, an unmapped topic, or the service bot's own output are not sent to a customer.
-- P-16: A confirmed delivery failure produces a clear notice in the same topic without creating a reply loop. An interrupted attempt with an unknown result is visible to the operator through the admin API and requires manual reconciliation; it is not automatically retried.
+- P-16: A confirmed delivery failure produces a clear notice in the same topic without creating a reply loop. If an interrupted attempt has an unknown result, the admin API and mapped topic show that the message may already have been delivered. The backend does not retry it automatically; a manager may explicitly send a new message as a separate attempt.
 - P-17: Internal discussion takes place outside mapped customer topics.
 
 ### Операционные данные
 
-- P-18: Persist an in-progress delivery attempt before calling Telegram. Expose attempts with unknown outcomes through the protected admin API for manual reconciliation.
+- P-18: Persist an in-progress delivery attempt before calling Telegram. Expose attempts with unknown outcomes through the protected admin API and warn the manager in the mapped topic without changing the attempt to success or failure.
 - P-19: Retain processed update IDs for 7 days and delivery statuses for 30 days. Retain conversation-to-topic mappings until the integration is deleted.
 
 ### Проверка завершения Prototype
@@ -106,9 +106,9 @@ MVP добавляет Telegram Business как второй тип клиент
 
 Отдельные требования MVP: одноразовая привязка Business-соединения к продукту с проверкой прав; подключение к другому Business-боту отклоняется. Ручные ответы самого Business-аккаунта отражаются в топике как уже отправленные. Shell использует backend API и после регистрации не получает постоянные Telegram-секреты. CSV сообщает об ошибочных строках; email не считается Telegram-идентификатором. Приглашения или заявки на вступление позволяют сопоставить присоединившегося менеджера с его Telegram user ID и выдать минимальные права.
 
-## После MVP
+## Release
 
-Автоматическое создание групп через отдельно авторизованный MTProto provisioning и прямые приглашения менеджеров остаются возможными продолжениями. Отдельного третьего этапа пока нет.
+Release включает автоматическое создание супергрупп через отдельно авторизованный MTProto-компонент и прямые приглашения менеджеров.
 
 Прямые приглашения через MTProto возможны только там, где Telegram их допускает; ссылка-приглашение остаётся запасным способом.
 

@@ -24,7 +24,7 @@ The owner account, customer-facing identity, and manager accounts can differ.
 3. A customer writes to the product bot. The backend finds or creates the conversation topic in that product's group.
 4. The backend delivers the customer message into the topic.
 5. A manager writes in the mapped topic. The backend immediately relays the message through the product bot.
-6. A confirmed delivery failure is reported in the same topic; an unknown outcome is shown to the operator for manual reconciliation.
+6. A confirmed delivery failure is reported in the same topic. If the result is unknown after an interruption, the topic warns the manager that the message may already have been delivered and the backend does not retry it automatically.
 
 A conversation key includes product, customer channel, and external customer chat. Telegram webhook handling is idempotent.
 
@@ -32,6 +32,6 @@ A conversation key includes product, customer channel, and external customer cha
 
 - **Prototype:** ordinary product bots, manual group and manager setup, admin API, serverless message bridge.
 - **MVP:** Telegram Business support through a shared connector bot, Runtime MF Shell integration, CSV manager onboarding and invitations. Bot and Business channels may coexist for one product.
-- **After MVP:** possible MTProto group provisioning and direct manager invitations; there is no named third stage.
+- **Release:** MTProto group provisioning and direct manager invitations.
 
 The accepted product behavior is in [plan.md](plan.md) and [specification.md](specification.md). Cross-task rules are in [decisions.md](../decisions.md). Technical details are in [architecture.md](architecture.md).

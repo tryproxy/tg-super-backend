@@ -169,17 +169,17 @@ Albums, edits, stickers, videos, and preserving reply or forwarding context.
 
 Follow P-08, P-10, and P-11; never echo service-bot notices to customers.
 
-## T09. Surface unknown delivery outcomes for manual reconciliation
+## T09. Surface unknown delivery outcomes for a manager decision
 
 ### Goal
 
-Record each outbound attempt before contacting Telegram and let an operator find outcomes left uncertain by interruption.
+Record each outbound attempt before contacting Telegram and warn the manager when an interruption leaves the delivery result unknown.
 
 ### Acceptance criteria
 
 - [ ] An in-progress attempt is persisted before a Telegram send; success and confirmed failure update its status.
-- [ ] An unfinished attempt is visible as unknown through the protected admin API and is not resent automatically.
-- [ ] The operator can record a manually verified outcome without causing a second send.
+- [ ] An unfinished attempt is visible as unknown through the protected admin API and as a warning in the mapped topic. It is not resent automatically.
+- [ ] The warning explains that the first message may already have been delivered. A later manager message creates a new delivery attempt and does not change the unknown status of the first attempt.
 - [ ] Tests cover interruption after Telegram accepted a message but before D1 recorded success, as well as a confirmed Telegram failure.
 
 ### Out of scope

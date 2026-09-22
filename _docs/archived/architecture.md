@@ -21,7 +21,7 @@ Node.js and pnpm are local build and test tools. The deployed Worker does not re
 
 The routing key is (product ID, customer channel ID, external customer chat ID). The reverse lookup uses both group ID and topic ID. Database uniqueness and update deduplication protect these mappings.
 
-Because the product bot and service bot are distinct, a file_id from one bot cannot be reused by the other. Supported media therefore needs a download and upload step; the cloud Bot API download ceiling is 20 MB. [Telegram Bot API](https://core.telegram.org/bots/api)
+Because the product support bot and service bot are distinct, a `file_id` from one bot cannot be reused by the other. Supported media therefore needs a download and upload step. Photos are limited to 10 MB by `sendPhoto`; documents and voice messages are limited to 20 MB by the cloud Bot API download ceiling. [Telegram Bot API](https://core.telegram.org/bots/api)
 
 ## Setup and secrets
 
@@ -31,7 +31,7 @@ The admin API uses a service token held in a Worker secret. Product bot tokens a
 
 ## Reliability
 
-Telegram may resend webhook updates, so retain processed update IDs for 7 days and use unique conversation/topic keys. Persist an in-progress delivery attempt before calling Telegram. D1 and Telegram cannot commit atomically: if an attempt remains unfinished after an interruption, expose its outcome as unknown through the admin API, do not retry automatically, and require the operator to reconcile it manually. This avoids claiming exactly-once external delivery. A manager reply is accepted only from a mapped product group and topic. Service-bot messages and delivery-error notices must not be bridged back to customers. Confirmed outbound failure produces a notice in the same topic and a stored failure state; an unknown outcome is not presented as a confirmed failure.
+Telegram may resend webhook updates, so retain processed update IDs for 7 days and use unique conversation/topic keys. Persist an in-progress delivery attempt before calling Telegram. D1 and Telegram cannot commit atomically: if an attempt remains unfinished after an interruption, expose its outcome as unknown through the admin API and warn the manager in the mapped topic that the message may already have been delivered. Do not retry it automatically. A later manager message is a new delivery attempt and does not change the unknown status of the first attempt. This avoids claiming exactly-once external delivery. A manager reply is accepted only from a mapped product group and topic. Service-bot messages and delivery-error notices must not be bridged back to customers. Confirmed outbound failure produces a notice in the same topic and a stored failure state; an unknown outcome is not presented as a confirmed failure.
 
 The Prototype runs directly from webhook to D1 and Telegram Bot API. A queue or per-conversation serialization component is introduced only if implementation demonstrates a concrete retry or concurrent topic-creation problem.
 
@@ -59,6 +59,6 @@ Workers Paid currently starts at USD 5/month and provides higher usage allowance
 
 ## MVP and later boundaries
 
-MVP adds a Telegram Business adapter, Shell configuration/status, and CSV manager onboarding with invitations. A product may use both customer channels at once. One shared platform Business connector bot handles Business connections; it is separate from the internal service bot. Both channels normalize into the same conversation model, while channel ID keeps their customer topics separate. A one-time pairing flow links a Business connection to its product. An account already connected to another Business bot is refused in MVP; chat scope and required rights still need decisions before implementation. Manual Business replies should be shown as already sent rather than sent back to the customer again.
+MVP adds a Telegram Business adapter, Shell configuration/status, and CSV manager onboarding with invitations. A product may use both customer channels at once. One shared platform Business connector bot handles Business connections; it is separate from the internal service bot. Both channels normalize into the same conversation model, while channel ID keeps their customer topics separate. A one-time pairing flow links a Business connection to its product. An account already connected to another Business bot is refused in MVP. The account owner selects accessible chats in Telegram Business settings; Telegram enforces that selection, and the backend handles every business message delivered for the connection without fetching or storing a separate recipient list. Required rights still need a decision before implementation. Manual Business replies should be shown as already sent rather than sent back to the customer again.
 
-Automated creation of user-owned groups and direct manager invitation require a separately authorized MTProto component. They are ideas for after MVP, not part of the two named stages.
+Release adds automated creation of user-owned groups and direct manager invitations through a separately authorized MTProto component.
