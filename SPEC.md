@@ -256,17 +256,17 @@ The remaining decisions are tracked in [_docs/open-questions.md](_docs/open-ques
 
 ## 9. Traceability
 
-This table maps User Stories to requirements and GitHub Issues. Prototype Issue links are provisional until the Issue reconciliation step; MVP and Release Issues have not been drafted.
+This table maps User Stories and cross-cutting work to requirements and GitHub Issues. Prototype Issues have been reconciled against the current requirements; MVP and Release Issues have not been drafted.
 
 | User Story | Specification requirements | GitHub Issues |
 | --- | --- | --- |
-| US-01 | PRO-01–PRO-07 | #3 and #4, pending reconciliation |
-| US-02 | PRO-08–PRO-12 | #4, pending reconciliation |
-| US-03 | PRO-13–PRO-20, PRO-46, and PRO-48–PRO-49 | #2, #5, and #6, pending reconciliation |
-| US-04 | PRO-21–PRO-27 | #8, pending reconciliation |
-| US-05 | PRO-28–PRO-37 | #7, #9, and #10, pending reconciliation |
-| US-06 | PRO-38–PRO-45 | #3 and #4, pending reconciliation |
-| Cross-cutting Prototype environment | PRO-47 | #11, pending reconciliation |
+| US-01 | PRO-01–PRO-07 | #2, #3, #4 |
+| US-02 | PRO-08–PRO-12 | #3, #4 |
+| US-03 | PRO-13–PRO-20, PRO-46, and PRO-48–PRO-49 | #2, #5, #6, #8, #10 |
+| US-04 | PRO-21–PRO-27 | #6, #7, #8 |
+| US-05 | PRO-28–PRO-37 | #5, #7, #8, #9, #10 |
+| US-06 | PRO-38–PRO-45 | #3, #4, #6 |
+| Cross-cutting Prototype environment | PRO-47 | #1, #11 |
 | US-07 | MVP-01–MVP-06 | MVP issues not drafted |
 | US-08 | MVP-07–MVP-10 | MVP issues not drafted |
 | US-09 | MVP-11–MVP-13 | MVP issues not drafted |
