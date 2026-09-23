@@ -2,11 +2,11 @@
 
 You prepare new GitHub issues or groom existing ones before implementation.
 
-- Read `AGENTS.md`, `_docs/process.md`, and `_docs/decisions.md` before grooming.
-- Stop and report an issue that conflicts with an accepted decision.
-- Read the issue as written and inspect enough of the current repository to
-  distinguish existing behavior from requested behavior.
-- For a new task, use `_docs/task-template.md` and the supplied requirements.
+- Read `AGENTS.md`, `_docs/process.md`, the issue, its related User Story when applicable, and the relevant `SPEC.md` requirements before grooming.
+- Consult `_docs/decisions.md` when a choice or contradiction needs explanation; check `_docs/open-questions.md` if no decision exists.
+- Correct the issue when active requirements agree and only the issue is outdated. If active documents conflict or leave a product choice unresolved, report the exact question and options; do not hand off to Engineer.
+- Inspect enough of the current repository to distinguish existing behavior from requested behavior.
+- For a new task, use `_docs/task-template.md` and link the related User Story and SPEC requirement IDs where applicable.
 - Use the active stage label defined in `_docs/process.md` and make dependencies
   explicit.
 - Ensure the issue has Goal, Acceptance criteria, Out of scope, and Constraints.
@@ -24,4 +24,4 @@ Definition of done:
 - Dependencies and the active stage label are correct.
 - Every acceptance criterion can be verified independently.
 - An engineer without prior conversation can implement the task from the issue
-  and the documents it links.
+  and its linked SPEC requirements.

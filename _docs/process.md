@@ -1,6 +1,7 @@
 # Work process
 
 - GitHub Issues are the active backlog. The current active stage is `prototype`.
+- User Stories state user goals; `SPEC.md` defines observable behavior; Decisions explain accepted choices; Issues divide that work into tasks.
 - Work on one open issue at a time, through the roles and lifecycle below.
 
 ## Roles
@@ -20,12 +21,15 @@
 
 Active stage label: `prototype`.
 
-An issue is eligible when it is open, carries that label, and every dependency listed in it is closed. If several are eligible, take the lowest issue number. If it is blocked or conflicts with `_docs/decisions.md`, stop and report it. Stop when none remain.
+An issue is eligible when it is open, carries that label, and every dependency listed in it is closed. If several are eligible, take the lowest issue number. Stop when none remain. If the selected issue is otherwise blocked, report it.
 
 1. Select the next eligible issue.
-2. Delegate grooming to `pm`. Accept the issue for implementation only after its Goal, acceptance criteria, Out of scope, Constraints, and verification checks are concrete.
-3. Delegate the groomed issue to `engineer`. On a retry, include the QA report. The engineer leaves the issue open.
-4. Delegate verification to `qa`.
+2. Delegate grooming to `pm`.
+   - PM checks the issue against its User Story, when applicable, and relevant SPEC requirements.
+   - If only the issue is outdated, PM corrects it. For an unclear choice or conflict, PM consults Decisions, then Open Questions if needed, and reports the specific question and options.
+   - Hand off only after discrepancies are resolved and Goal, acceptance criteria, Out of scope, Constraints, and verification checks are concrete.
+3. Delegate the groomed issue and its linked SPEC requirements to `engineer`. On a retry, include the QA report. The engineer leaves the issue open.
+4. Delegate verification of the issue and its linked SPEC requirements to `qa`.
 5. On `FAIL`, return to step 3 with that report.
 6. On `PASS`, the acceptance criteria are checked and the issue is closed.
 7. Repeat from step 1.
@@ -34,5 +38,4 @@ Do not skip grooming. The engineer does not close the issue. QA does not change 
 
 ## Reference
 
-- Issue references `P-01` through `P-19` point to the [archived Prototype plan](archived/plan.md). Archived plans, specifications, architecture, and task drafts are reference material. Current decisions and GitHub Issues take precedence if they differ.
-- When work moves to MVP, use accepted decisions, open MVP questions, and archived Prototype material to draft that stage's scope and issues. Keep `_docs/tech-stack.md` current; write a new architecture document only if the stage needs a cross-issue design.
+- Current requirements are in [SPEC.md](../SPEC.md), with goals in [User Stories](user-stories.md) and accepted choices in [Decisions](decisions.md). Issue references `P-01` through `P-19` point to the [archived Prototype plan](archived/plan.md); archived material is historical context. Reconcile disagreements among active documents before implementation.

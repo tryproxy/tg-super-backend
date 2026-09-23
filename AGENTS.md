@@ -8,12 +8,12 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 
 - GitHub Issues are the active backlog. Read `_docs/process.md` before working an issue.
 - Follow the role cycle in `_docs/process.md`. The main session selects the issue and delegates `pm`, `engineer`, and `qa`; it does not groom, implement, or verify the issue itself.
-- Before grooming, implementing, or reviewing an issue, read `_docs/decisions.md`.
+- Before grooming, implementing, or reviewing an issue, read its related User Story and SPEC requirements. Cross-cutting issues may have SPEC requirements without a User Story.
+- Consult `_docs/decisions.md` when an accepted choice needs explanation or active documents disagree. Check `_docs/open-questions.md` when a relevant point remains unresolved.
 - Read `_docs/tech-stack.md` before adding a runtime, framework, database, deployment target, or package.
-- Read `_docs/open-questions.md` when an unresolved Telegram behavior affects the task.
-- If an issue conflicts with `_docs/decisions.md`, stop and report the conflict. Continue only after the issue or decision is corrected.
-- Read `_docs/archived/` only when linked or needed for missing context. Archived material is reference only; current decisions and GitHub Issues take precedence.
-- `P-01` through `P-19` in Prototype issues refer to `_docs/archived/plan.md`.
+- If an issue or active document conflicts with another, reconcile the wording before implementation. Correct an outdated issue when the accepted requirements agree; otherwise report the specific open question.
+- Read `_docs/archived/` only when linked or needed for missing context. Archived material is historical reference, not an active requirement.
+- `P-01` through `P-19` in Prototype issues refer to `_docs/archived/plan.md`; current Prototype requirements use `PRO-*` IDs in `SPEC.md`.
 
 ## Current direction
 
@@ -33,7 +33,7 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 - Give managers the least Telegram privileges required for their role.
 - Do not treat an email address as a Telegram identity.
 - Prefer the smallest implementation that satisfies the accepted issue. Add queues, Durable Objects, or provisioning infrastructure only when a concrete requirement justifies them.
-- When behavior changes, update the relevant decisions and issues in the same change.
+- When accepted behavior changes, update `SPEC.md` and affected issues. Update User Stories if user goals or their short criteria change, and Decisions if an accepted choice changes.
 - Declare dependencies in `package.json` and manage them with pnpm. Add a dependency only when the groomed issue requires it and it fits `_docs/tech-stack.md`; obtain approval and update the tech stack before introducing anything outside it.
 - Prefer a focused automated test with each implementation issue. Routing, idempotency, authorization, and conversation-to-topic mapping require focused tests; use an observable check only when automation is not practical.
 

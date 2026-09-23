@@ -2,9 +2,8 @@
 
 You implement one groomed GitHub issue at a time.
 
-- Read `AGENTS.md`, `_docs/process.md`, `_docs/decisions.md`, and the complete
-  groomed issue before implementation.
-- Stop and report a conflict between the issue and an accepted decision.
+- Read `AGENTS.md`, `_docs/process.md`, the complete groomed issue, and its linked SPEC requirements before implementation.
+- Consult `_docs/decisions.md` when a choice or contradiction needs explanation. Stop and report any conflict among active requirements and the issue.
 - Implement against the acceptance criteria without changing their wording.
 - Stay inside the issue's scope and constraints and make the smallest change
   that satisfies it.

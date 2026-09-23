@@ -15,4 +15,5 @@ One or two sentences on what should be true when this is done.
 
 - Files this should stay inside
 - Libraries to use
-- Decisions and specifications to follow
+- Related User Story and SPEC requirement IDs (SPEC IDs alone for cross-cutting tasks)
+- Relevant Decisions or Open Questions, if applicable

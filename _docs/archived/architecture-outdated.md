@@ -1,4 +1,6 @@
-# Architecture
+# Architecture (outdated)
+
+Historical draft. The current design is in [Architecture](../architecture.md); some decisions below have been superseded.
 
 ## Prototype shape
 
