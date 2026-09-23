@@ -9,7 +9,7 @@ flowchart LR
     US["User Stories<br/>цели пользователей"] -->|уточняем| SPEC["SPEC.md<br/>поведение системы"]
     OQ["Open Questions<br/>ответы и неясности"] -->|принятый ответ| DEC["Decisions<br/>выбор и причина"]
     DEC <-->|сверяем выбор и поведение| SPEC
-    SPEC -->|требования PRO / MVP / REL| ISS["GitHub Issues<br/>активные задачи"]
+    SPEC -->|требования PRO| ISS["GitHub Issues<br/>активные задачи Prototype"]
     DEC -->|общие ограничения| ISS
     STACK["Tech Stack<br/>выбранные технологии"] -->|технические рамки| ISS
     ARCH["Architecture<br/>связи компонентов"] -->|устройство системы| ISS

@@ -1,7 +1,5 @@
 # tg-super-backend
 
-Serverless Telegram support bridge. Customers contact a product's dedicated Telegram support bot; managers work in mapped topics of that product's private forum group.
+Serverless Telegram support backend. In the Prototype, customers message a dedicated support bot for each product; managers reply from topics in that product's private forum supergroup.
 
-Start with the [document map](_docs/README.md). Current product documents: [User Stories](_docs/user-stories.md), [SPEC](SPEC.md), [Decisions](_docs/decisions.md), [Open Questions](_docs/open-questions.md), [Architecture](_docs/architecture.md), and [Tech Stack](_docs/tech-stack.md).
-
-Prototype work is tracked in [GitHub Issues](https://github.com/tryproxy/tg-super-backend/issues?q=is%3Aopen+label%3Aprototype); the [work process](_docs/process.md) explains how to handle an issue.
+The [specification](SPEC.md) defines the planned behavior. The [documentation map](_docs/README.md) explains the other documents, and [Prototype issues](https://github.com/tryproxy/tg-super-backend/issues?q=is%3Aopen+label%3Aprototype) track implementation work.
