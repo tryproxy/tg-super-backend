@@ -17,7 +17,7 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 
 ## Current direction
 
-- The named stages are Prototype, MVP, and Release, in that order. Telegram Business, Shell integration, and CSV onboarding belong to MVP. MTProto group provisioning and direct manager invitations belong to Release.
+- The named stages are Prototype, MVP, and Release, in that order. Telegram Business, Shell integration, and CSV onboarding belong to MVP. MTProto group provisioning belongs to Release; manager onboarding uses the MVP invitation-link flow.
 - Prototype uses one dedicated Telegram support bot per product, manually prepared product forum groups and managers, one common internal service bot, and a protected admin API. Products exist independently of this backend; it stores only their references and Telegram integrations.
 - Use TypeScript, Node.js and pnpm for local tooling; deploy webhook handlers on Cloudflare Workers Free with D1 Free.
 - Keep the message-processing path serverless: Telegram webhook, conversation/topic lookup, persistence, Telegram delivery.
