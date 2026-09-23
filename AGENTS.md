@@ -13,7 +13,6 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 - Read `_docs/tech-stack.md` before adding a runtime, framework, database, deployment target, or package.
 - If an issue or active document conflicts with another, reconcile the wording before implementation. Correct an outdated issue when the accepted requirements agree; otherwise report the specific open question.
 - Read `_docs/archived/` only when linked or needed for missing context. Archived material is historical reference, not an active requirement.
-- `P-01` through `P-19` in Prototype issues refer to `_docs/archived/plan.md`; current Prototype requirements use `PRO-*` IDs in `SPEC.md`.
 
 ## Current direction
 

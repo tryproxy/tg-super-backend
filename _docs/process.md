@@ -38,4 +38,4 @@ Do not skip grooming. The engineer does not close the issue. QA does not change 
 
 ## Reference
 
-- Current requirements are in [SPEC.md](../SPEC.md), with goals in [User Stories](user-stories.md) and accepted choices in [Decisions](decisions.md). Issue references `P-01` through `P-19` point to the [archived Prototype plan](archived/plan.md); archived material is historical context. Reconcile disagreements among active documents before implementation.
+- Current requirements are in [SPEC.md](../SPEC.md), with goals in [User Stories](user-stories.md) and accepted choices in [Decisions](decisions.md). Reconcile disagreements among active documents before implementation.

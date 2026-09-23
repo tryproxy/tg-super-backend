@@ -143,7 +143,7 @@ A stored record of one manager reply sent toward a customer. It is created befor
 
 ## 6. Functional requirements
 
-Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, and `REL` for Release. Each requirement links to its User Story.
+Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, and `REL` for Release. Requirements link to User Stories where applicable; cross-cutting requirements may have no User Story.
 
 ### 6.1 Setup and access
 
