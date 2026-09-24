@@ -15,7 +15,7 @@ flowchart LR
     DEC --> PM
     OQ -.->|только при неясности| PM
     FINDINGS["Findings со статусом accepted<br/>назначенные на эту задачу"] --> PM
-    STACK["Tech Stack<br/>выбранные технологии"] -.->|если задача меняет технологии| PM
+    STACK["Tech Stack<br/>стек и кандидаты"] -.->|если задача меняет технологии| PM
     ARCH["Architecture<br/>компоненты и границы"] -.->|если задача меняет устройство системы| PM
 
     TEMPLATE["Task Template<br/>структура задачи"] --> PM
@@ -89,7 +89,7 @@ QA
 | [SPEC.md](SPEC.md) | Подробное поведение, роли, потоки и требования с ID. | Читать связанные с задачей разделы и ID, а не весь файл. |
 | [Decisions](decisions.md) | Принятые общие выборы и причины. | Когда нужно понять выбор или устранить расхождение. |
 | [Open Questions](open-questions.md) | Исходные вопросы, принятые ответы и то, что ещё не решено. | Когда задача затрагивает неясное поведение или следующий этап. |
-| [Tech Stack](tech-stack.md) | Утверждённые инструменты Prototype. | При выборе зависимости, среды или способа развёртывания. |
+| [Tech Stack](tech-stack.md) | Утверждённый стек Prototype и черновики для MVP и Release. | При выборе зависимости, среды или способа развёртывания. |
 | [Architecture](architecture.md) | Компоненты, обмен сообщениями и границы этапов. | Когда нужно понять, как устроен поток и где разместить изменение. |
 | [Routing](workflow/routing.md) | Определения routing labels и выбор профилей Engineer и QA. | PM использует при классификации, основная сессия — при делегировании. |
 | [Process](workflow/process.md), [Task Template](workflow/task-template.md), [PM](workflow/team/pm.md), [Engineer](workflow/team/engineer.md), [QA](workflow/team/qa.md) | Порядок работы с Issue, его формат и роли PM, Engineer, QA. | При подготовке и выполнении Issue. |
