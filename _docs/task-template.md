@@ -17,3 +17,4 @@ One or two sentences on what should be true when this is done.
 - Libraries to use
 - Related User Story and SPEC requirement IDs (SPEC IDs alone for cross-cutting tasks)
 - Relevant Decisions or Open Questions, if applicable
+- Relevant Finding IDs and their placement, if applicable

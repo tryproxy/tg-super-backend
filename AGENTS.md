@@ -7,11 +7,11 @@ Use CodeGraph before text search when locating code symbols or call paths if a `
 ## Required context
 
 - GitHub Issues are the active backlog. Read `_docs/process.md` before working an issue.
-- Follow the role cycle in `_docs/process.md`. The main session selects the issue and delegates `pm`, `engineer`, and `qa`; it does not groom, implement, or verify the issue itself.
-- Before grooming, implementing, or reviewing an issue, read its related User Story and SPEC requirements. Cross-cutting issues may have SPEC requirements without a User Story.
-- Consult `_docs/decisions.md` when an accepted choice needs explanation or active documents disagree. Check `_docs/open-questions.md` when a relevant point remains unresolved.
+- Follow the role cycle in `_docs/process.md`. The main session selects the Issue, delegates grooming to `pm`, and selects the Engineer or QA project agent profile according to `_docs/routing.md`; it does not groom, implement, or verify the Issue itself.
+- PM reads the related User Story, SPEC requirements, Decisions, and Open Questions while grooming. Engineer reads the complete groomed Issue and its linked implementation context. QA verifies the acceptance criteria in the Issue and does not reconcile requirements.
+- When an Issue references a research Finding, read its entry in `_docs/research/findings.md`. Findings supply evidence and ordering; they do not override accepted requirements.
 - Read `_docs/tech-stack.md` before adding a runtime, framework, database, deployment target, or package.
-- If an issue or active document conflicts with another, reconcile the wording before implementation. Correct an outdated issue when the accepted requirements agree; otherwise report the specific open question.
+- PM reconciles an Issue with active requirements before implementation. Engineer reports a concrete obstacle instead of changing the contract; QA returns only `PASS` or `FAIL` against the acceptance criteria.
 - Read `_docs/archived/` only when linked or needed for missing context. Archived material is historical reference, not an active requirement.
 
 ## Current direction
