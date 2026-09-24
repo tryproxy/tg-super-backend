@@ -20,7 +20,7 @@ Keep the stable `G` identifier after a Finding is renamed, scheduled, implemente
 | Status | Meaning | Effect on current work |
 | --- | --- | --- |
 | `proposed` | Evidence and a recommendation are recorded, but no disposition is accepted. | Does not delay implementation. |
-| `accepted` | The Finding must be addressed at its recorded stage and placement. Its product answer may still remain open until scheduled grooming. | Blocks only when placed before the current Issue; otherwise follow its recorded placement. |
+| `accepted` | The Finding must be addressed at its recorded stage and placement. Its product answer may still remain open until scheduled grooming. | Resolve any open choice at its scheduled grooming; include accepted work according to placement. |
 | `postponed` | The Finding remains useful but is intentionally deferred. | Does not expand or delay the current stage. |
 | `rejected` | The Finding will not be adopted; the reason is recorded. | No implementation effect. |
 | `implemented` | The accepted result and owning implementation have passed QA. | Move the record to `archived/` with its evidence and final links. |
@@ -52,3 +52,11 @@ Each Finding records:
 - completion conditions and implementation home.
 
 Use [findings.md](findings.md) as the active registry and schedule. When implementation and QA are complete, preserve the final decision and evidence under [archived](archived/). Postponed Findings stay in the active registry so their dependency chain remains visible.
+
+## Issue links
+
+Register a Finding by adding its ID and placement to Constraints in every affected open implementation Issue, with a link to its entry. Keep these links current when placement changes. PM reads these linked entries rather than scanning the registry.
+
+If the work has no Issue yet, retain its stage and placement in the registry; when creating an Issue for that scope, PM checks the registry once and adds applicable links. For completed work, propose a follow-up Issue; reopen the old Issue only if an accepted criterion was not met.
+
+If GitHub is unavailable, return the exact link edits with the Finding report to the main session. Registration is incomplete until those edits are applied.

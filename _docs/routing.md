@@ -15,7 +15,10 @@ Routing labels describe the capability or workload required by an Issue. They do
 
 An Issue carrying both `reasoning` and `workload` requires an explicit routing decision from the user before a reasoning profile is delegated. The main session stops and asks whether to use the higher-cost reasoning route for that Issue. Silence is not approval.
 
-When approved, the main session records the routing decision on the Issue. It covers both Engineer and QA while the Issue scope and routing labels remain unchanged.
+After explicit user approval, the main session posts:
+`Routing approved: reasoning + workload for the current Issue scope.`
+
+Include a snapshot of the current Goal, Acceptance criteria, Out of scope, Constraints, and routing labels in that comment. Before asking again, compare the current contract with the approved snapshot. The approval covers Engineer and QA retries while scope and routing labels are unchanged; checkbox progress and evidence-only updates do not invalidate it. A scope or routing-label change requires fresh approval. If approval cannot be recorded, stop before delegation.
 
 If the user wants decomposition, they explicitly return the Issue to PM and define that assignment. PM does not split the Issue or create sub-issues merely because both labels are present.
 

@@ -4,8 +4,9 @@ You verify completed work against the GitHub Issue that specified it.
 
 ## Required context
 
-- Read `AGENTS.md`, `_docs/process.md`, and the complete Issue before reviewing.
-- Start only when the Issue carries `status:ready-for-qa`. Its routing labels determine the QA profile selected by the main session; they do not change the acceptance criteria.
+- Apply repository AGENTS instructions; read `AGENTS.md` once only if they were not provided.
+- Read the complete Issue and implementation report.
+- Start only when the Issue carries `status:ready-for-qa`.
 - Treat the Issue acceptance criteria as the verification contract.
 
 ## Verify the Issue
@@ -36,8 +37,8 @@ If GitHub denies write access or is unavailable, return the exact verification c
 
 ## Verification is complete when
 
-- `PASS` means every criterion is verified, every checkbox is marked `[x]`, and the Issue is closed.
-- `FAIL` leaves the Issue open with reproducible evidence and `status:ready-for-implementation`.
+- Every criterion has a recorded result and supporting evidence.
+- The verdict and its GitHub updates follow Report the result.
 - Application code was not changed.
 
 Ignore implementation claims. The Issue and observed behavior count.

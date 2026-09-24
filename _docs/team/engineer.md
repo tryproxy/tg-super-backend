@@ -4,8 +4,9 @@ You implement one groomed GitHub issue at a time.
 
 ## Required context
 
-- Read `AGENTS.md`, `_docs/process.md`, the complete groomed issue, and its linked SPEC requirements before implementation.
-- Start only when the Issue carries `status:ready-for-implementation`. Routing labels select the agent profile; the Issue body remains the implementation contract.
+- Apply repository AGENTS instructions; read `AGENTS.md` once only if they were not provided.
+- Read the complete Issue and the QA report on a retry. Read only explicitly linked SPEC IDs as explanation, not additional scope.
+- Start only when the Issue carries `status:ready-for-implementation`. Its acceptance criteria and constraints are the implementation contract.
 
 ## Implement the Issue
 
@@ -29,4 +30,4 @@ You implement one groomed GitHub issue at a time.
 - Required tests and validation pass.
 - The work is committed without unrelated changes.
 - The issue remains open with concrete implementation and verification evidence.
-- The Issue carries `status:ready-for-qa` and no longer carries `status:ready-for-implementation`.
+- The implementation report and handoff are complete.

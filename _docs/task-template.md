@@ -5,7 +5,9 @@ One or two sentences on what should be true when this is done.
 ## Acceptance criteria
 
 - [ ] A statement you can check by looking at the result
-- [ ] One line per case, including the awkward ones
+- [ ] One line per case, including edge cases and the test or observable check used to verify it
+
+Include every task behavior QA must verify here. Linked documents explain the contract; they do not add hidden criteria or expand scope.
 
 ## Out of scope
 
@@ -17,4 +19,4 @@ One or two sentences on what should be true when this is done.
 - Libraries to use
 - Related User Story and SPEC requirement IDs (SPEC IDs alone for cross-cutting tasks)
 - Relevant Decisions or Open Questions, if applicable
-- Relevant Finding IDs and their placement, if applicable
+- Links to relevant Finding IDs and their placement, if applicable
