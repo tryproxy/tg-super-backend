@@ -240,6 +240,8 @@ Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, a
 
 ## 7. Reliability, security, and data retention
 
+Telegram credentials and webhook processing stay in this backend. Across all stages, managers receive only the Telegram permissions needed for their support role.
+
 Webhook processing is idempotent within the seven-day processed-update retention period. Topic recovery preserves the conversation when a topic is closed or deleted. Unknown results of topic or group creation are not retried automatically and require reconciliation. Outbound delivery attempts are stored before Telegram is called, unknown outcomes are not retried automatically, and delivery statuses are retained for 30 days. Administrative setup and readiness responses do not expose Telegram secrets or customer messages.
 
 - `PRO-46` (US-03, Open Question 4): Conversation-to-topic associations are retained until the corresponding Telegram integration is deleted.

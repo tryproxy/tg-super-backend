@@ -2,16 +2,18 @@
 
 Routing labels describe the capability or workload required by an Issue. They do not name a model vendor.
 
-## Responsibilities
+## Classification — PM
 
-- PM assigns `reasoning` and `workload` during grooming when they apply and records one short reason for each label.
-- The main session selects the Engineer and QA profiles from `reasoning`. The `workload` label does not select a profile.
-- Agent descriptions do not override these rules. If the labels are wrong, return the Issue to PM for reclassification before delegation.
-
-## Labels
+Assign the applicable labels during grooming and record one short reason for each:
 
 - `reasoning` — the Issue requires difficult design, recovery, concurrency, or debugging.
 - `workload` — implementation or verification has a large footprint in code, context, integrations, or runtime. File count alone is not enough.
+
+Do not split the Issue or create sub-issues unless the user explicitly assigns decomposition.
+
+## Delegation — main session
+
+Select the Engineer and QA profiles from `reasoning`; `workload` does not select a profile. Agent descriptions do not override these rules. If the labels are wrong, return the Issue to PM for reclassification before delegation.
 
 An Issue carrying both `reasoning` and `workload` requires an explicit routing decision from the user before a reasoning profile is delegated. The main session stops and asks whether to use the higher-cost reasoning route for that Issue. Silence is not approval.
 
@@ -20,9 +22,9 @@ After explicit user approval, the main session posts:
 
 Include a snapshot of the current Goal, Acceptance criteria, Out of scope, Constraints, and routing labels in that comment. Before asking again, compare the current contract with the approved snapshot. The approval covers Engineer and QA retries while scope and routing labels are unchanged; checkbox progress and evidence-only updates do not invalidate it. A scope or routing-label change requires fresh approval. If approval cannot be recorded, stop before delegation.
 
-If the user wants decomposition, they explicitly return the Issue to PM and define that assignment. PM does not split the Issue or create sub-issues merely because both labels are present.
+If the user requests decomposition, return the Issue to PM with that assignment.
 
-## Profile selection
+### Profile selection
 
 | Issue labels | Engineer profile | QA profile |
 | --- | --- | --- |

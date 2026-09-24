@@ -5,15 +5,16 @@ You prepare new GitHub Issues or groom the supplied Issue before implementation.
 ## Required context
 
 - Apply repository AGENTS instructions; read `AGENTS.md` once only if they were not provided.
-- Read the complete Issue, its related User Story when applicable, and the referenced SPEC IDs.
-- Use [Routing](../routing.md) for classification and [Task Template](../task-template.md) for the Issue structure.
-- Read only Finding entries linked from the Issue. Use [Research workflow](../research/README.md) when handling Findings.
+- Read the complete Issue, its related User Story when applicable, and the referenced SPEC IDs. For a new Issue, use the supplied scope to identify the relevant Story and SPEC requirements.
+- Read only [Classification — PM](../routing.md#classification--pm) in Routing; use [Task Template](../task-template.md) for the Issue structure.
+- Read [Architecture](../architecture.md) only when the Issue changes components, message flow, persistence, or deployment. Read [Tech Stack](../tech-stack.md) only when it selects or changes a technology or dependency.
+- For an existing Issue, read only linked Finding entries. For a new Issue, check the [registry](../research/findings.md#registry) for its scope and add applicable Finding links and placements. Use [Research workflow](../research/README.md) when handling Findings.
 - Consult [Decisions](../decisions.md) for a choice or conflict; consult [Open Questions](../open-questions.md) if no accepted answer exists.
 
 ## Groom the Issue
 
 - Inspect enough of the repository to distinguish existing behavior from requested work. Do not edit application code.
-- Fill Goal, Acceptance criteria, Out of scope, and Constraints. Include observable edge cases and a verification method for each criterion.
+- Fill Goal, Acceptance criteria, Out of scope, and Constraints. Include observable edge cases and a verification method for each criterion. Name the required commands or manual checks; if a command does not exist yet, make creating it part of the Issue.
 - Put all task behavior QA must verify in Acceptance criteria. Constraints bound implementation; linked documents explain the task without adding hidden scope.
 - Correct an outdated Issue when accepted requirements agree. If they conflict or leave a product choice open, report the exact question, affected criteria, and recommendation to the main session; do not choose silently.
 - After an accepted behavior change, reconcile SPEC and affected Issues. Update Decisions for changed choices, Open Questions for accepted answers, and User Stories for changed goals or short criteria.

@@ -20,12 +20,12 @@ Issues already plan `/health` (#1), topic-creation recovery (#6), manager delive
 
 | ID | Status | Stage and placement | Tracking | Decision state |
 | --- | --- | --- | --- | --- |
-| G1: interrupted webhook | `accepted` | Before #5 | [#12](https://github.com/tryproxy/tg-super-backend/issues/12) | Recovery rule remains open until #5 grooming. |
-| G2: customer-to-topic posting | `accepted` | Before #6; apply again inside #8 | [#13](https://github.com/tryproxy/tg-super-backend/issues/13) | Failure and unknown-result behavior remains open. |
+| G1: interrupted webhook | `accepted` | Before #5; demonstrate inside #11 | [#12](https://github.com/tryproxy/tg-super-backend/issues/12) | Recovery rule remains open until #5 grooming. |
+| G2: customer-to-topic posting | `accepted` | Before #6; inside #8; demonstrate inside #11 | [#13](https://github.com/tryproxy/tg-super-backend/issues/13) | Failure and unknown-result behavior remains open. |
 | G3: warning delivery failure | `accepted` | Inside #7 and #9; demonstrate in #11 | [#14](https://github.com/tryproxy/tg-super-backend/issues/14) | Fallback must be accepted during grooming. |
 | G4: operational explanation | `accepted` | Inside #11 | [#15](https://github.com/tryproxy/tg-super-backend/issues/15) | Write from implemented commands and resources. |
 | G5: Free-tier capacity evidence | `accepted` | Inside #11 | [#16](https://github.com/tryproxy/tg-super-backend/issues/16) | Evidence pending; stack remains unchanged until measured. |
-| G6: data-storage boundary | `accepted` | Before #6, together with G2 | [#17](https://github.com/tryproxy/tg-super-backend/issues/17) | Message-content retention remains open. |
+| G6: data-storage boundary | `accepted` | Before #6, together with G2; inside #8 | [#17](https://github.com/tryproxy/tg-super-backend/issues/17) | Message-content retention remains open. |
 | G7: integration lifecycle | `proposed` | Before MVP integration-management Issues | — | Resolve before grooming that scope. |
 | G8: product access in Shell | `proposed` | Before MVP Shell API Issues | — | Extend Open Question 10 before grooming. |
 | G9: work visibility | `proposed` | Product discovery after Prototype | — | Optional; create a User Story only if chosen. |
@@ -56,7 +56,7 @@ Do not pause #1–#4 to solve later Findings.
 
 - **Source and evidence:** #5 stores the first update claim before downstream work, then acknowledges a repeated claim without saying whether the first attempt completed. Telegram can retry unsuccessful webhooks.
 - **Impact:** reliability and recovery.
-- **Placement:** before #5; downstream Telegram side effects are verified in #6–#9.
+- **Placement:** before #5; downstream Telegram side effects are verified in #6–#9; demonstrate accepted recovery inside #11.
 - **Affected work:** `SPEC.md` `PRO-19`, architecture, #5, and relevant checks in #6–#9.
 - **Risk if skipped:** a repeated update can be discarded as a duplicate even though processing stopped, or unsafe recovery can repeat an external action.
 - **Recommendation:** distinguish received, processing, completed, and needs-review outcomes. A repeat inspects the stored outcome and resumes only work that is safe to repeat. Define the HTTP acknowledgement for each outcome.
@@ -67,7 +67,7 @@ Do not pause #1–#4 to solve later Findings.
 
 - **Source and evidence:** current requirements cover uncertain topic creation and manager-to-customer delivery, but not a failure or unknown result when posting a customer's message into an existing topic.
 - **Impact:** customer-visible behavior, delivery state, diagnostics, and possibly persistence.
-- **Placement:** before #6 for text; reuse the accepted rule inside #8 for media.
+- **Placement:** before #6 for text; reuse the accepted rule inside #8 for media; demonstrate accepted recovery inside #11.
 - **Affected work:** SPEC, Decisions or Open Questions, architecture, #2, #6, #8, and possibly #9.
 - **Risk if skipped:** the service can claim that support received content when delivery was never confirmed, or blindly repeat a Telegram action that may already have succeeded.
 - **Recommendation:** define confirmed failure, unknown result, customer notice, operator recovery, and whether an inbound attempt is stored before posting.
@@ -111,7 +111,7 @@ Do not pause #1–#4 to solve later Findings.
 
 - **Source and evidence:** architecture lists routing metadata and delivery attempts but does not explicitly state whether customer or manager message bodies are stored. Metadata cannot recreate an original payload after Telegram stops retrying it.
 - **Impact:** product privacy, recovery guarantees, persistence, and retention.
-- **Placement:** before #6 together with G2.
+- **Placement:** before #6 together with G2; apply the accepted policy inside #8.
 - **Affected work:** SPEC reliability rules, architecture, Decisions or Open Questions, #2, #5, #6, and #8 as required by the chosen design.
 - **Risk if skipped:** requirements may promise replay that metadata-only storage cannot perform, leading to a later schema and privacy redesign.
 - **Recommendation:** state which content, if any, is stored, its retention and access, and whether a missing original can be replayed or the customer must resend.

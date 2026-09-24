@@ -40,20 +40,32 @@ sequenceDiagram
     C->>T: Private message to product support bot
     T->>W: Product-bot webhook update
     W->>D: Deduplicate update and resolve conversation
-    alt Topic missing or deleted
+    alt Topic closed
+        W->>T: Reopen topic as common service bot
+    else Topic missing or deleted
         W->>D: Reserve topic creation
         W->>T: Create topic as common service bot
-        T-->>W: Confirmed topic ID
-        W->>D: Store topic mapping
+        alt Creation confirmed
+            T-->>W: Confirmed topic ID
+            W->>D: Store topic mapping
+        else Creation result unknown
+            W->>D: Keep reservation unresolved
+            W->>T: Send unconfirmed-transfer notice as product bot
+            T-->>C: Transfer to support is unconfirmed
+        end
     end
-    W->>T: Post content or rejection notice as service bot
-    T-->>M: Message in customer topic
-    M->>T: Reply in that topic
-    T->>W: Service-bot webhook update
-    W->>D: Store delivery attempt before sending
-    W->>T: Send reply as the original product bot
-    T-->>W: Result or request failure
-    W->>D: Record known or unknown outcome
+    alt Topic known and open
+        W->>T: Post content or rejection notice as service bot
+        T-->>M: Message in customer topic
+        M->>T: Reply in that topic
+        T->>W: Service-bot webhook update
+        W->>D: Store delivery attempt before sending
+        W->>T: Send reply as the original product bot
+        T-->>W: Result or request failure
+        W->>D: Record known or unknown outcome
+    else Topic creation unresolved
+        Note over W,M: No topic delivery until operator reconciliation
+    end
 ```
 
 The conversation key is **product ID + customer channel ID + external chat ID**. The reverse route uses the configured group and topic ID. A later customer message uses the current topic; a closed topic is reopened, while a deleted topic is replaced. A first unsupported or oversized customer message still creates a topic and leaves an explanatory notice there. For supported media, the Worker downloads through the receiving bot and uploads through the sending bot: Telegram's [`file_id` is specific to one bot](https://core.telegram.org/bots/api#sending-files).

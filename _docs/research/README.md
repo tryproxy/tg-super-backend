@@ -55,7 +55,7 @@ Use [findings.md](findings.md) as the active registry and schedule. When impleme
 
 ## Issue links
 
-Register a Finding by adding its ID and placement to Constraints in every affected open implementation Issue, with a link to its entry. Keep these links current when placement changes. PM reads these linked entries rather than scanning the registry.
+The Registry's `Stage and placement` column is the source of Issue links. Add the Finding ID, placement, and entry link to Constraints in every open implementation Issue explicitly named there. If work or verification is assigned to another Issue, update the Registry first; an Issue mentioned only under `Affected work` does not receive a link. PM reads linked entries rather than scanning the registry.
 
 If the work has no Issue yet, retain its stage and placement in the registry; when creating an Issue for that scope, PM checks the registry once and adds applicable links. For completed work, propose a follow-up Issue; reopen the old Issue only if an accepted criterion was not met.
 
