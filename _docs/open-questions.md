@@ -27,10 +27,10 @@
 7. **Business chat scope:** does the connected bot handle all eligible personal chats or only chats explicitly selected in Telegram?
    > *(Принятое решение для MVP: владелец выбирает в Telegram, какие переписки передать в поддержку. Только сообщения из этих переписок появляются в супергруппе. Telegram передаёт подключённому боту сообщения из разрешённых переписок; наш бэкенд обрабатывает их и не хранит отдельный список разрешённых чатов.)*
 
-8. **Business permissions:** which rights are mandatory, and what should happen when Telegram no longer permits a reply through the connection?
+8. **Business permissions:** which rights are mandatory, and what recovery action, if any, is needed beyond showing a failed delivery in the topic when Telegram no longer permits a reply?
 
 9. **CSV contract and delivery:** which columns are required, and who distributes the prepared manager invite links?
-   > *(Уже принято для MVP: после загрузки CSV система готовит отдельную ссылку-приглашение для каждой корректной строки и показывает ошибки в остальных строках. Открыто: состав колонок и способ передачи ссылок менеджерам.)*
+   > *(Уже принято для MVP и сохранено для Release: после загрузки CSV система готовит отдельную ссылку-приглашение для каждой корректной строки и показывает ошибки в остальных строках. Открыто: состав колонок и способ передачи ссылок менеджерам.)*
 
 10. **Shell ownership:** which Shell product/remote identifier is authoritative for this backend, and who can change an integration?
 
@@ -42,4 +42,6 @@
 12. Where may the authorized user session be stored, for how long, and what fallback or additional verification is needed when QR login cannot be used?
 
 13. Are direct MTProto invitations worth implementing after link-based onboarding works?
-   > *(Принятое решение для Release: нет. Менеджеры вступают по ссылкам-приглашениям с подтверждением владельца продукта, как определено для MVP. Прямые приглашения через MTProto не входят в запланированный Release.)*
+   > *(Принятое решение для Release: да. После создания супергруппы и проверки служебного бота система использует ту же MTProto-сессию владельца, чтобы попробовать добавить менеджеров из CSV. Shell показывает результат для каждого. Если Telegram не позволил добавить менеджера, остаётся путь через ссылку-приглашение из MVP; работа группы от этого не зависит.)*
+
+14. **Direct-invite identities:** which Telegram identifiers will the CSV provide, and how will the owner's account resolve and confirm each manager before a direct MTProto invitation?

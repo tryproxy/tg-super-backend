@@ -20,7 +20,7 @@ Telegram Business, Runtime MF Shell integration, CSV manager onboarding, and man
 
 ### Release
 
-User-account-based MTProto provisioning of a product support supergroup.
+User-account-based MTProto provisioning of a product support supergroup and direct manager invitations from a CSV when Telegram permits them.
 
 ## 3. Actors and Telegram identities
 
@@ -38,7 +38,7 @@ One Telegram bot used by the platform in every product support supergroup. Durin
 
 ### Manager
 
-A person allowed to write in a product support supergroup's customer topics. In Prototype, MVP, and Release, an ordinary message from such a person in a mapped topic is an external reply; the backend does not require a matching CSV manager record as an additional sending permission. During the Prototype, managers are added manually. In the MVP, an account can also be linked to an imported manager record after the product owner confirms a join request.
+A person allowed to write in a product support supergroup's customer topics. In Prototype, MVP, and Release, an ordinary message from such a person in a mapped topic is an external reply; the backend does not require a matching CSV manager record as an additional sending permission. During the Prototype, managers are added manually. In the MVP, an account can also be linked to an imported manager record after the product owner confirms a join request. In Release, a resolvable, confirmed account may also be added through the group owner's MTProto session.
 
 ### Customer
 
@@ -119,7 +119,7 @@ A stored record of one manager reply sent toward a customer. It is created befor
 1. The product owner connects the shared Business connector bot to their Telegram account and chooses which private chats to give it access to in Telegram.
 2. Telegram sends messages from those chats to the connected bot. The backend identifies the product from the Business connection.
 3. The backend finds or creates a separate customer topic for that product, Business channel, and customer chat, then shows the message to managers there.
-4. A manager's reply in that topic is sent to the customer on behalf of the Business account when Telegram permits it.
+4. A manager's reply in that topic is sent on behalf of the Business account when Telegram permits it. If Telegram rejects the send, the manager sees the failed delivery in the topic.
 
 ### MVP: Shell setup and CSV invitation preparation
 
@@ -130,16 +130,17 @@ A stored record of one manager reply sent toward a customer. It is created befor
 5. The product owner confirms the applicant in Shell. The backend asks Telegram to approve the join request. After Telegram confirms success, it links the Telegram ID to the manager record and marks the manager as joined; if approval fails, Shell shows the reason and keeps the applicant unjoined.
 6. The CSV column format and delivery of prepared links remain open questions.
 
-### Release: create a support supergroup
+### Release: create a support supergroup and invite managers
 
-1. Shell requests a short-lived QR login token from the separate MTProto component and displays it to the product owner. An expired QR code is refreshed.
-2. The owner scans and approves the QR code in an already signed-in Telegram app. The MTProto component confirms the authorized user account; Shell and the operator do not receive an exported user session. Session storage and any fallback login remain open questions.
-3. Provisioning checks whether the product already has a support supergroup. If it does, the backend reports the existing group and does not create another.
-4. If there is no group, the backend first stores a provisioning operation with a unique marker. The MTProto component creates a private forum supergroup under the authorized user account and places that marker in its description. The user account remains the group owner.
+1. The backend checks whether the product already has a support supergroup. If it does, Shell reports the existing group; no QR login or new group creation is needed, and MVP invitation links remain available for managers.
+2. Otherwise Shell requests a short-lived QR login token from the separate MTProto component and displays it to the product owner. An expired QR code is refreshed.
+3. The owner scans and approves the QR code in an already signed-in Telegram app. The MTProto component confirms the authorized user account; Shell and the operator do not receive an exported user session. Session storage and any fallback login remain open questions.
+4. The backend first stores a provisioning operation with a unique marker. The MTProto component creates a private forum supergroup under the authorized user account and places that marker in its description. The user account remains the group owner.
 5. On confirmed creation, the backend records the group ID and product association before further setup. If the result is unknown, it does not create another group automatically.
 6. To recover an unknown result, the authorized account lists its groups and checks their descriptions for the marker, asking the owner to authorize the account again by QR if necessary. A matching group is associated with the product. If the result still cannot be verified, Shell shows that review is required before another creation attempt.
 7. Provisioning adds the common service bot, grants the rights needed for message handling, topics, and MVP manager invitations, then verifies its access. The temporary marker is removed after setup succeeds.
 8. If authorization or bot setup fails, Shell shows the cause. A retry continues configuring any recorded group instead of creating a replacement.
+9. If the owner provides a manager CSV while creating the group, the same authorized account attempts to add managers whose Telegram identities have been resolved and confirmed. Shell shows each result. A manager who cannot be added can still use the MVP invitation-link flow; that person's failure does not change the group's readiness. The CSV identity fields and confirmation method remain open questions.
 
 ## 6. Functional requirements
 
@@ -161,7 +162,7 @@ Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, a
 - `PRO-12` (US-02): Manager invitations, identity matching, and automatic assignment of Telegram permissions are outside the Prototype.
 - `PRO-38` (US-06): A protected administrative API exposes whether a product's Telegram integration is ready to receive and route messages without requiring a Shell interface.
 - `PRO-39` (US-06): Readiness checks verify that the configured Telegram support bot is accessible and has the expected bot identity.
-- `PRO-40` (US-06): Readiness checks verify that the Telegram support bot's webhook points to the expected backend endpoint and uses the expected webhook protection.
+- `PRO-40` (US-06): Readiness checks compare the webhook URL reported by Telegram with the expected backend endpoint and verify that this backend is configured to validate incoming webhook secret tokens. Telegram's getWebhookInfo does not expose the secret token configured on its side.
 - `PRO-41` (US-06): Readiness checks verify that the configured support supergroup exists and has forum topics enabled.
 - `PRO-42` (US-06): Readiness checks verify that the common service bot belongs to the support supergroup and has the access required to receive messages and manage topics.
 - `PRO-43` (US-06): Each readiness check returns its own result and an actionable reason when it fails, so the operator can identify what must be corrected.
@@ -210,7 +211,7 @@ Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, a
 - `MVP-02` (US-07): The backend verifies that the Business connection is active and checks the rights Telegram granted to the connector bot. An account already connected to another Business bot cannot be connected without changing that connection in Telegram.
 - `MVP-03` (US-07): The product owner chooses in Telegram which private chats the connected bot may handle. Telegram applies that choice; the backend handles the Business messages Telegram delivers and does not fetch or store a separate list of permitted chats.
 - `MVP-04` (US-07): Each customer's Business conversation has its own topic in the product's support supergroup. If the product also uses an ordinary Telegram support bot, its conversations use separate topics. The same topic lifecycle, uncertain-creation recovery, and seven-day webhook deduplication rules apply to both channels.
-- `MVP-05` (US-07): Manager replies from a Business customer topic are sent on behalf of the connected Business account when Telegram permits the reply.
+- `MVP-05` (US-07): Manager replies from a Business customer topic are sent on behalf of the connected Business account only when Telegram permits it. The connector bot's can_reply right applies to private chats with an incoming message in the preceding 24 hours. A confirmed rejection is reported as a failed delivery in the same topic; any further recovery behavior remains Open Question 8.
 - `MVP-06` (US-07): Replies sent manually from the Business account appear in the corresponding customer topic as already sent and are not delivered to the customer a second time.
 
 ### 6.6 Shell, CSV, and invitations
@@ -228,15 +229,18 @@ Requirement prefixes identify their stage: `PRO` for Prototype, `MVP` for MVP, a
 - `MVP-17` (US-10): Shell shows the manager's joining status and role. A failed approval remains visible with its reason and does not mark the manager as joined.
 - `MVP-18` (US-10): Joined managers receive only the group permissions needed to work in support topics; the invitation flow does not grant Telegram administrator rights by default.
 
-### 6.7 MTProto provisioning
+### 6.7 MTProto group provisioning and manager invitations
 
-- `REL-01` (US-11): Shell displays a short-lived QR code generated by the MTProto component. The product owner scans and approves it in an already signed-in Telegram app; an expired QR code is refreshed. No account export or previously authorized session is supplied to an operator.
+- `REL-01` (US-11): If the product has no support supergroup, Shell displays a short-lived QR code generated by the MTProto component. The product owner scans and approves it in an already signed-in Telegram app; an expired QR code is refreshed. No account export or previously authorized session is supplied to an operator.
 - `REL-02` (US-11): The provisioning component uses the authorized user account through MTProto, separate from the serverless message-routing path, to create a private forum supergroup for the product. That user account becomes the Telegram group owner.
-- `REL-03` (US-11): If the product already has a support supergroup associated with it, provisioning does not create or replace the group.
+- `REL-03` (US-11): Before requesting QR authorization, the backend checks for an associated support supergroup. If one exists, provisioning does not create or replace it; managers continue to use the MVP invitation-link flow.
 - `REL-04` (US-11): Before asking Telegram to create a group, the backend stores a per-product provisioning operation with a unique marker and includes that marker in the new group description. On confirmed success, it records the group ID and product association before bot setup. The integration is not marked ready while the service bot or its required rights are missing.
 - `REL-05` (US-11): Provisioning adds the common service bot to the created group, grants the rights required to receive manager messages, manage topics, and handle MVP manager join requests, and verifies those rights before reporting setup complete.
 - `REL-06` (US-11): Shell displays a concrete failure reason when QR authorization, group creation, bot addition, or rights verification fails. Authorized-session storage, any additional verification, and a fallback when QR login cannot be used remain governed by Open Question 12.
 - `REL-07` (US-11): If group creation has an unknown outcome, another group is not created automatically. Using the authorized account, the component lists its groups and checks their descriptions for the stored marker, reauthorizing by QR if necessary. A matching group is linked to the product and setup resumes. If the result remains unverified, Shell shows that review is required before a new creation attempt. The temporary marker is removed after successful setup.
+- `REL-08` (US-12): After a newly created group and the common service bot are ready, the same authorized user account attempts to add managers from a supplied CSV through MTProto when their Telegram identities can be resolved and confirmed. The required CSV fields and identity-confirmation method are open questions.
+- `REL-09` (US-12): Shell reports a separate result for every CSV row: added, could not identify the Telegram account, rejected by Telegram, or outcome unknown. An unknown result is checked against group membership before another invitation attempt or a link-based invitation. Directly added managers receive no Telegram administrator rights by default.
+- `REL-10` (US-12): A manager who cannot be added directly can use the MVP invitation-link and join-request flow. That flow also remains available for an already associated group, where no direct invitation is attempted. Individual invitation failures do not roll back group creation or change the group's readiness.
 
 ## 7. Reliability, security, and data retention
 
@@ -251,10 +255,10 @@ Webhook processing is idempotent within the seven-day processed-update retention
 
 - **Prototype:** Telegram Business, Shell setup, CSV onboarding, automatic invitations, and MTProto provisioning are outside scope; operators prepare groups and managers manually.
 - **MVP:** Shell can connect an existing support supergroup, but does not create one.
-- **Release:** MTProto creates the support supergroup. Manager onboarding still uses the MVP invitation-link flow; direct MTProto invitations are outside scope.
+- **Release:** MTProto creates a support supergroup only when the product has none, then can attempt to add managers from a CSV through the same authorized owner account. The MVP invitation-link flow remains available for existing groups and when a direct invitation cannot be completed.
 - **Across planned stages:** Telegram reply-to links are not preserved. Albums, edits, separate tickets, and internal notes in customer topics are outside the accepted scope.
 
-The remaining decisions are tracked in [_docs/open-questions.md](open-questions.md): Business reply permissions (8), CSV columns and link distribution (9), Shell product identity and access (10), and user-session storage or QR fallback (12).
+The remaining decisions are tracked in [open-questions.md](open-questions.md): Business reply permissions (8), MVP CSV columns and link distribution (9), Shell product identity and access (10), user-session storage or QR fallback (12), and Release CSV identities and confirmation (14).
 
 ## 9. Traceability
 
@@ -274,3 +278,4 @@ This table maps User Stories and cross-cutting work to requirements and GitHub I
 | US-09 | MVP-11–MVP-13 | MVP issues not drafted |
 | US-10 | MVP-14–MVP-18 | MVP issues not drafted |
 | US-11 | REL-01–REL-07 | Release issues not drafted |
+| US-12 | REL-08–REL-10 | Release issues not drafted |
