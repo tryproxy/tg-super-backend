@@ -6,7 +6,7 @@ This document consolidates the earlier separate research report and implementati
 
 ## Authority
 
-Findings provide evidence, recommendations, and ordering. Accepted behavior remains in [SPEC.md](../../SPEC.md), explanations in [Decisions](../decisions.md), unresolved product choices in [Open Questions](../open-questions.md), and implementation contracts in GitHub Issues. Follow the lifecycle in [Research workflow](README.md).
+Findings provide evidence, recommendations, and ordering. Accepted behavior remains in [SPEC.md](../SPEC.md), explanations in [Decisions](../decisions.md), unresolved product choices in [Open Questions](../open-questions.md), and implementation contracts in GitHub Issues. Follow the lifecycle in [Research workflow](README.md).
 
 No Finding in this file changes a product decision by itself.
 

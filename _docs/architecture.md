@@ -1,6 +1,6 @@
 # Architecture
 
-Status: active design for the Prototype. MVP and Release coverage here is limited to the boundaries already accepted for those stages. [SPEC.md](../SPEC.md) defines behavior and requirement IDs; [decisions.md](decisions.md) records choices and reasons; [tech-stack.md](tech-stack.md) is the list of selected technologies.
+Status: active design for the Prototype. MVP and Release coverage here is limited to the boundaries already accepted for those stages. [SPEC.md](SPEC.md) defines behavior and requirement IDs; [decisions.md](decisions.md) records choices and reasons; [tech-stack.md](tech-stack.md) is the list of selected technologies.
 
 ## Components
 

@@ -29,4 +29,4 @@ Role files own their actions, reports, and outgoing label changes.
 
 A routing approval request also ends the run until answered. If QA returns without a verdict because verification could not be completed, keep the handoff state and stop with its report. If the same obstacle recurs without a relevant change to the Issue or working conditions, stop and report it to the user rather than delegating again. Report and stop on any other obstacle that prevents progress.
 
-After an owning Issue passes QA and closes, the main session checks linked Finding completion conditions against the owning Issues' QA evidence. When all conditions are met, close the tracking Issue and archive its record according to [Research workflow](research/README.md).
+After an owning Issue passes QA and closes, the main session checks linked Finding completion conditions against the owning Issues' QA evidence. When all conditions are met, close the tracking Issue and archive its record according to [Research workflow](../research/README.md).

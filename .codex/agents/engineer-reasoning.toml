@@ -1,8 +1,8 @@
 name = "engineer-reasoning"
 description = "Implement a groomed Issue carrying the reasoning label."
-model = "gpt-6-sol"
-model_reasoning_effort = "max"
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
 developer_instructions = """
-Read and follow `_docs/team/engineer.md`. Work only on the groomed Issue
+Read and follow `_docs/workflow/team/engineer.md`. Work only on the groomed Issue
 supplied by the main session and return the result to it.
 """

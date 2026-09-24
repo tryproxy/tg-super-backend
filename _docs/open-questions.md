@@ -22,7 +22,7 @@
 6. **Environments:** which bot identities, groups, D1 databases, and webhook addresses will be used for local, staging, and production verification?
    > *(Принятое допущение для Prototype: для разработки и демонстрации используются отдельные боты, группы, вебхуки и D1. Локальная разработка использует тестовый набор; production для Prototype не подготавливается. Конкретные токены и ID задаются при развёртывании.)*
 
-## Before MVP
+## MVP
 
 7. **Business chat scope:** does the connected bot handle all eligible personal chats or only chats explicitly selected in Telegram?
    > *(Принятое решение для MVP: владелец выбирает в Telegram, какие переписки передать в поддержку. Только сообщения из этих переписок появляются в супергруппе. Telegram передаёт подключённому боту сообщения из разрешённых переписок; наш бэкенд обрабатывает их и не хранит отдельный список разрешённых чатов.)*

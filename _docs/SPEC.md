@@ -254,7 +254,7 @@ Webhook processing is idempotent within the seven-day processed-update retention
 - **Release:** MTProto creates the support supergroup. Manager onboarding still uses the MVP invitation-link flow; direct MTProto invitations are outside scope.
 - **Across planned stages:** Telegram reply-to links are not preserved. Albums, edits, separate tickets, and internal notes in customer topics are outside the accepted scope.
 
-The remaining decisions are tracked in [_docs/open-questions.md](_docs/open-questions.md): Business reply permissions (8), CSV columns and link distribution (9), Shell product identity and access (10), and user-session storage or QR fallback (12).
+The remaining decisions are tracked in [_docs/open-questions.md](open-questions.md): Business reply permissions (8), CSV columns and link distribution (9), Shell product identity and access (10), and user-session storage or QR fallback (12).
 
 ## 9. Traceability
 

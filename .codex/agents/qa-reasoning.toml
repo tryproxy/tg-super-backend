@@ -1,8 +1,8 @@
 name = "qa-reasoning"
 description = "Verify a completed Issue carrying the reasoning label without fixing it."
-model = "gpt-6-astra"
-model_reasoning_effort = "medium"
+model = "gpt-6-sol"
+model_reasoning_effort = "max"
 developer_instructions = """
-Read and follow `_docs/team/qa.md`. Verify only the completed Issue supplied
+Read and follow `_docs/workflow/team/qa.md`. Verify only the completed Issue supplied
 by the main session and return the result to it.
 """

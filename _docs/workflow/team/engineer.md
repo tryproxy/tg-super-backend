@@ -16,7 +16,7 @@ You implement one groomed GitHub issue at a time.
 - Prefer focused automated tests for changed behavior. Routing, idempotency, authorization, and conversation-to-topic mapping require focused tests; use an observable check only when automation is not practical.
 - Run the Issue's required checks before committing, starting with focused checks. Use the actual scripts in `package.json` for repository commands; README supplies setup instructions when needed. If a required check is unavailable and creating it is outside scope, report the obstacle instead of silently skipping it.
 - Add queues, Durable Objects, or provisioning infrastructure only when a concrete Issue requirement justifies them.
-- Declare dependencies in `package.json` and manage them with pnpm. Add a dependency only when the Issue requires it and it fits [Tech Stack](../tech-stack.md); obtain approval and update the tech stack before introducing anything outside it.
+- Declare dependencies in `package.json` and manage them with pnpm. Add a dependency only when the Issue requires it and it fits [Tech Stack](../../tech-stack.md); obtain approval and update the tech stack before introducing anything outside it.
 - Commit at coherent, verified checkpoints and keep unrelated work untouched.
 - Do not mark acceptance-criteria checkboxes or close the issue.
 - Post a factual implementation report with the commands and results used for

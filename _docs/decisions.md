@@ -1,6 +1,6 @@
 # Decisions
 
-Accepted cross-task choices and their reasons are recorded here. [SPEC.md](../SPEC.md) defines the detailed behavior; [open-questions.md](open-questions.md) keeps both unresolved questions and their accepted answers.
+Accepted cross-task choices and their reasons are recorded here. [SPEC.md](SPEC.md) defines the detailed behavior; [open-questions.md](open-questions.md) keeps both unresolved questions and their accepted answers.
 
 ## Scope and ownership
 

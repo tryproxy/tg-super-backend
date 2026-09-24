@@ -7,9 +7,9 @@ You prepare new GitHub Issues or groom the supplied Issue before implementation.
 - Apply repository AGENTS instructions; read `AGENTS.md` once only if they were not provided.
 - Read the complete Issue, its related User Story when applicable, and the referenced SPEC IDs. For a new Issue, use the supplied scope to identify the relevant Story and SPEC requirements.
 - Read only [Classification — PM](../routing.md#classification--pm) in Routing; use [Task Template](../task-template.md) for the Issue structure.
-- Read [Architecture](../architecture.md) only when the Issue changes components, message flow, persistence, or deployment. Read [Tech Stack](../tech-stack.md) only when it selects or changes a technology or dependency.
-- For an existing Issue, read only linked Finding entries. For a new Issue, check the [registry](../research/findings.md#registry) for its scope and add applicable Finding links and placements. Use [Research workflow](../research/README.md) when handling Findings.
-- Consult [Decisions](../decisions.md) for a choice or conflict; consult [Open Questions](../open-questions.md) if no accepted answer exists.
+- Read [Architecture](../../architecture.md) only when the Issue changes components, message flow, persistence, or deployment. Read [Tech Stack](../../tech-stack.md) only when it selects or changes a technology or dependency.
+- For an existing Issue, read only linked Finding entries. For a new Issue, check the [registry](../../research/findings.md#registry) for its scope and add applicable Finding links and placements. Use [Research workflow](../../research/README.md) when handling Findings.
+- Consult [Decisions](../../decisions.md) for a choice or conflict; consult [Open Questions](../../open-questions.md) if no accepted answer exists.
 
 ## Groom the Issue
 
