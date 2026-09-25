@@ -1,0 +1,4 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# No project-wide overrides: unset values inherit through Codex's config precedence.
+# Role-specific agent profiles are defined in .codex/agents/*.toml.
