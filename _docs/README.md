@@ -1,87 +1,52 @@
 # Карта документов
 
-Здесь показано, откуда берутся требования, как они превращаются в задачи и какие документы читает каждая роль. Стрелки обозначают рабочий поток, а не старшинство документов.
+Здесь собраны действующие документы проекта и указано, где искать нужную информацию. Схемы работы с задачами и ролями находятся в [карте workflow](workflow/README.md).
 
-## Поток требований
+## С чего начать
 
-```mermaid
-flowchart LR
-    US["User Stories<br/>цели пользователей"] -->|уточняют| SPEC["SPEC.md<br/>поведение системы"]
-    OQ["Open Questions<br/>ответы и неясности"] -->|принятый ответ| DEC["Decisions<br/>выбор и причина"]
-    DEC -->|согласуем поведение| SPEC
+Документы отвечают на разные вопросы:
 
-    US --> PM["PM<br/>груминг"]
-    SPEC --> PM
-    DEC --> PM
-    OQ -.->|только при неясности| PM
-    FINDINGS["Findings со статусом accepted<br/>назначенные на эту задачу"] --> PM
-    STACK["Tech Stack<br/>стек и кандидаты"] -.->|если задача меняет технологии| PM
-    ARCH["Architecture<br/>компоненты и границы"] -.->|если задача меняет устройство системы| PM
-
-    TEMPLATE["Task Template<br/>структура задачи"] --> PM
-    PM --> ISS["GitHub Issue<br/>полный контракт задачи"]
-```
-
-## Жизненный цикл Issue
-
-```mermaid
-flowchart LR
-    ISSUE["Issue<br/>без handoff label"] --> PM["PM"]
-    PM --> READY_IMPL["status:ready-for-implementation"]
-    READY_IMPL --> ENG["Engineer"]
-    ENG --> READY_QA["status:ready-for-qa"]
-    READY_QA --> QA["QA"]
-
-    QA -->|PASS| CLOSED["Issue закрыт"]
-    QA -->|FAIL| READY_IMPL
-    QA -->|проверка не завершена| STOP["Основная сессия<br/>останавливается"]
-    ENG -->|контракт нельзя выполнить| PM
-    PM -->|нужно решение пользователя| STOP
-```
-
-## Точки входа ролей
-
-```text
-Основная сессия
-  AGENTS → Process → Routing → выбранный профиль
-                     │
-                     └─ выбор профиля и разрешение на дорогой маршрут
-  Передаёт конкретное задание и нужный отчёт, без всей истории обсуждения.
-
-Все роли
-  Применяют AGENTS.
-  Читают его отдельно, только если он ещё не был предоставлен.
-
-PM
-  профиль → workflow/team/pm.md → Issue + User Story + связанные SPEC ID
-                       → Routing: только классификация PM
-                       → Task Template
-                       │
-                       ├─ существующий Issue → связанные Findings
-                       ├─ новый Issue → реестр Findings по его области
-                       ├─ работа с Findings → Research workflow
-                       └─ выбор или конфликт → Decisions
-                                               └─ нет ответа → Open Questions
-
-Engineer
-  профиль → workflow/team/engineer.md → Issue + связанные SPEC ID
-                             ├─ повторная попытка → отчёт QA
-                             ├─ добавление зависимости → Tech Stack
-                             └─ проверки → package.json
-                                           + README при необходимости
-
-QA
-  профиль → workflow/team/qa.md → Issue + отчёт Engineer
-                       → код и проверки критериев Issue
-                       → команды и настройка окружения при необходимости
-                       │
-                       ├─ всё проверено и соответствует → PASS
-                       ├─ подтверждено нарушение критерия → FAIL
-                       └─ проверка не завершена, нарушение не установлено
-                          → отчёт без вердикта → остановка основной сессии
-```
+- [User Stories](user-stories.md) — для кого и зачем нужна возможность.
+- [SPEC.md](SPEC.md) — что должна делать система.
+- [Decisions](decisions.md) — почему выбран этот вариант.
+- GitHub Issue — какую часть делаем сейчас.
 
 ## Где что искать
+
+```text
+_docs/
+├── README.md
+├── SPEC.md
+├── architecture.md
+├── decisions.md
+├── open-questions.md
+├── tech-stack.md
+├── user-stories.md
+├── archived/
+│   ├── architecture-outdated.md
+│   ├── concept.md
+│   ├── plan.md
+│   ├── specification.md
+│   └── tasks.md
+├── research/
+│   ├── README.md
+│   ├── findings.md
+│   └── archived/
+│       └── README.md
+└── workflow/
+    ├── README.md
+    ├── process.md
+    ├── routing.md
+    ├── task-template.md
+    └── team/
+        ├── engineer.md
+        ├── pm.md
+        └── qa.md
+```
+
+В корне `_docs` лежат действующие требования и описание системы. `workflow/` содержит инструкции по работе с Issue, `research/` — найденные улучшения и ограничения, `archived/` — старые документы для истории. Ниже указано, какой файл открывать для конкретной задачи.
+
+### Требования и устройство системы
 
 | Документ | Назначение | Когда открывать |
 | --- | --- | --- |
@@ -91,14 +56,19 @@ QA
 | [Open Questions](open-questions.md) | Исходные вопросы, принятые ответы и то, что ещё не решено. | Когда задача затрагивает неясное поведение или следующий этап. |
 | [Tech Stack](tech-stack.md) | Утверждённый стек Prototype и черновики для MVP и Release. | При выборе зависимости, среды или способа развёртывания. |
 | [Architecture](architecture.md) | Компоненты, обмен сообщениями и границы этапов. | Когда нужно понять, как устроен поток и где разместить изменение. |
-| [Routing](workflow/routing.md) | Определения routing labels и выбор профилей Engineer и QA. | PM использует при классификации, основная сессия — при делегировании. |
-| [Process](workflow/process.md), [Task Template](workflow/task-template.md), [PM](workflow/team/pm.md), [Engineer](workflow/team/engineer.md), [QA](workflow/team/qa.md) | Порядок работы с Issue, его формат и роли PM, Engineer, QA. | При подготовке и выполнении Issue. |
-| [Research workflow](research/README.md), [Findings](research/findings.md) | Правила работы с поздно найденными улучшениями, ограничениями и рисками; реестр показывает их место в очереди. | При груминге PM читает связанные с Issue записи; при создании Issue проверяет реестр для его области. |
+
+### Задачи и роли
+
+| Документ | Назначение | Когда открывать |
+| --- | --- | --- |
 | [GitHub Issues](https://github.com/tryproxy/tg-super-backend/issues) | Активный список задач, их критерии и зависимости. | Чтобы выбрать конкретную работу и проверить её результат. |
+| [Карта workflow](workflow/README.md) | Поток требований, жизненный цикл Issue и точки входа ролей. | Чтобы быстро увидеть, как документы переходят в задачи и кто работает с ними. |
+| [Process](workflow/process.md), [Task Template](workflow/task-template.md), [PM](workflow/team/pm.md), [Engineer](workflow/team/engineer.md), [QA](workflow/team/qa.md) | Порядок работы с Issue, его формат и роли PM, Engineer, QA. | При подготовке и выполнении Issue. |
+| [Routing](workflow/routing.md) | Определения routing labels и выбор профилей Engineer и QA. | PM использует при классификации, основная сессия — при делегировании. |
+
+### Исследования и история
+
+| Документ | Назначение | Когда открывать |
+| --- | --- | --- |
+| [Research workflow](research/README.md), [Findings](research/findings.md) | Правила работы с поздно найденными улучшениями, ограничениями и рисками; реестр показывает их место в очереди. | При груминге PM читает связанные с Issue записи; при создании Issue проверяет реестр для его области. |
 | [Архив](archived/) | Предыдущие план, концепт, спецификация, архитектура и черновик задач. | Только для истории или недостающего контекста; архив может расходиться с текущими решениями. |
-
-Порядок выполнения Issue и остановки определены в [Process](workflow/process.md#lifecycle). Основная сессия читает Process; каждая роль — свою инструкцию. Engineer использует Issue и указанный в нём контекст; QA проверяет критерии Issue.
-
-Spec отвечает на вопрос «что должна делать система», Decisions — «почему выбран этот вариант», а Issue — «какую часть делаем сейчас». Если они расходятся, нельзя молча выбрать один документ по старшинству: нужно установить принятое решение и согласовать формулировки до реализации.
-
-Действующая [Architecture](architecture.md) объясняет связи компонентов. [Устаревшая версия](archived/architecture-outdated.md) остаётся в архиве для истории; таблица технологий находится в Tech Stack.
